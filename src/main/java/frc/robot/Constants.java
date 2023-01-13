@@ -11,8 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-//import frc.lib.util.COTSFalconSwerveConstants;
-//import frc.lib.util.SwerveModuleConstants;
+import frc.lib.util.COTSFalconSwerveConstants;
+import frc.lib.util.SwerveModuleConstants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -29,7 +29,7 @@ public final class Constants {
       public static final int pigeonID = 1;
       public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
-      //public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
+      public static final COTSFalconSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
           COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
       /* Drivetrain Constants */
