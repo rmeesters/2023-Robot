@@ -84,6 +84,24 @@ public class COTSFalconSwerveConstants {
         return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);
     }
 
+    /** Gnomes Module  RM Edit 01-13 **/
+    public static COTSFalconSwerveConstants GNOMES(double driveGearRatio){
+        double wheelDiameter = Units.inchesToMeters(4.0);
+ 
+        /** 12.8 : 1 */
+        double angleGearRatio = (12.8 / 1.0);
+ 
+        double angleKP = 0.2;
+        double angleKI = 0.0;
+        double angleKD = 0.0;
+        double angleKF = 0.0;
+ 
+        boolean driveMotorInvert = false;
+        boolean angleMotorInvert = false;
+        boolean canCoderInvert = false;
+        return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);
+    }
+
     /* Drive Gear Ratios for all supported modules */
     public class driveGearRatios{
         /* SDS MK3 */
@@ -109,5 +127,8 @@ public class COTSFalconSwerveConstants {
         public static final double SDSMK4i_L2 = (6.75 / 1.0);
         /** SDS MK4i - 6.12 : 1 */
         public static final double SDSMK4i_L3 = (6.12 / 1.0);
+
+        /* Gnomes Module RM edit 01-13 */
+        public static final double GNOMES = (8.16 / 1.0); 
     }
 }
