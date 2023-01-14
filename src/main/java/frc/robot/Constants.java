@@ -33,8 +33,8 @@ public final class Constants {
           COTSFalconSwerveConstants.GNOMES(COTSFalconSwerveConstants.driveGearRatios.GNOMES);
 
       /* Drivetrain Constants */
-      public static final double trackWidth = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
-      public static final double wheelBase = Units.inchesToMeters(21.73); //TODO: This must be tuned to specific robot
+      public static final double trackWidth = Units.inchesToMeters(22.625); //TODO: This must be tuned to specific robot - RM Tuned for 2023 Robot 0114
+      public static final double wheelBase = Units.inchesToMeters(25.4375); //TODO: This must be tuned to specific robot - RM Tuned for 2023 Robot 0114
       public static final double wheelCircumference = chosenModule.wheelCircumference;
 
       /* Swerve Kinematics 
