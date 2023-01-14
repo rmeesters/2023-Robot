@@ -88,8 +88,8 @@ public class COTSFalconSwerveConstants {
     public static COTSFalconSwerveConstants GNOMES(double driveGearRatio){
         double wheelDiameter = Units.inchesToMeters(4.0);
  
-        /** 12.8 : 1 */
-        double angleGearRatio = (12.8 / 1.0);
+        /** 49 : 1 */
+        double angleGearRatio = (49.0 / 1.0); //RM Set for Gnomes swerver 0114
  
         double angleKP = 0.2;
         double angleKI = 0.0;
