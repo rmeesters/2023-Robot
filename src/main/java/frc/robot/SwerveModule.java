@@ -29,9 +29,9 @@ public class SwerveModule {
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;
         
-        /* Angle Encoder Config */
+        /* Angle Encoder Config 
         angleEncoder = new CANCoder(moduleConstants.cancoderID);
-        configAngleEncoder();
+        configAngleEncoder(); */
 
         /* Angle Motor Config */
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID);
@@ -82,10 +82,10 @@ public class SwerveModule {
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
     }
 
-    private void configAngleEncoder(){        
+    /* private void configAngleEncoder(){        
         angleEncoder.configFactoryDefault();
         angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
-    }
+    } */
 
     private void configAngleMotor(){
         mAngleMotor.configFactoryDefault();
