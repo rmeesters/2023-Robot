@@ -129,6 +129,6 @@ public class COTSFalconSwerveConstants {
         public static final double SDSMK4i_L3 = (6.12 / 1.0);
 
         /* Gnomes Module RM edit 01-13 */
-        public static final double GNOMES = (8.16 / 1.0); 
+        public static final double GNOMES = (8.88 / 1.0); 
     }
 }
