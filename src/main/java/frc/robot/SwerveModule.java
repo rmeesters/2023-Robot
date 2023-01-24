@@ -93,7 +93,7 @@ public class SwerveModule {
         mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
-        resetToAbsolute();
+        resetToAbsolute(); //consider turning this off and testing - or perhaps seting the selected sensor position to 0 like with the drive motor. 
     }
 
     private void configDriveMotor(){        
