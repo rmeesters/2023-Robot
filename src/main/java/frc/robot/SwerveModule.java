@@ -77,11 +77,10 @@ public class SwerveModule {
         return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
     }
 
-    private void resetToAbsolute(){
-        // double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
-        double absolutePosition = Conversions.degreesToFalcon(getAngle().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
+    /* private void resetToAbsolute(){
+        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.Swerve.angleGearRatio);
         mAngleMotor.setSelectedSensorPosition(absolutePosition);
-    }
+    } */
 
     /* private void configAngleEncoder(){        
         angleEncoder.configFactoryDefault();
@@ -93,7 +92,8 @@ public class SwerveModule {
         mAngleMotor.configAllSettings(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Swerve.angleMotorInvert);
         mAngleMotor.setNeutralMode(Constants.Swerve.angleNeutralMode);
-        resetToAbsolute(); //consider turning this off and testing - or perhaps seting the selected sensor position to 0 like with the drive motor. 
+        // resetToAbsolute(); 
+        mAngleMotor.setSelectedSensorPosition(0);  //Code for no Cancoder swerve
     }
 
     private void configDriveMotor(){        
