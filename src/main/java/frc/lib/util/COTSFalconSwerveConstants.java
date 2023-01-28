@@ -91,12 +91,12 @@ public class COTSFalconSwerveConstants {
         /** 49 : 1 */
         double angleGearRatio = (10.0 / 1.0); //RM Set for Gnomes swerver 0114 - change from 49 to 10 for old robot 0124
  
-        double angleKP = 0.2;
+        double angleKP = 0.6;
         double angleKI = 0.0;
         double angleKD = 0.0;
         double angleKF = 0.0;
  
-        boolean driveMotorInvert = false;
+        boolean driveMotorInvert = true;
         boolean angleMotorInvert = false;
         boolean canCoderInvert = false;
         return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);

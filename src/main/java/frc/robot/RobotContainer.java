@@ -33,7 +33,7 @@ public class RobotContainer {
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    private final Limelight s_Limelight = new Limelight();
+    // private final Limelight s_Limelight = new Limelight();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -62,7 +62,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        getLL.onTrue(new InstantCommand(() -> s_Limelight.getLimelight()));
+        // getLL.onTrue(new InstantCommand(() -> s_Limelight.getLimelight()));
     }
 
     /**
