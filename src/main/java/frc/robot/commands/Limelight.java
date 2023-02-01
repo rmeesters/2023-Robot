@@ -27,7 +27,7 @@ public class Limelight extends CommandBase {
   double y;
   double area;
   double led;
-  final double limelightmountAnglesDegrees= 0.0;
+  final double limelightmountAnglesDegrees= 0.0; //total angle - ty 
   final double limelightLensHeightInches=39.5;
   final double goalHeightInches= 29.5;
   final double distanceDiffToTarget = -9.25;
@@ -129,25 +129,35 @@ public double getAngletoGoalRadians(){
 public double DistanceToGoalInInches(){
   return (goalHeightInches- limelightLensHeightInches)/Math.tan(this.getAngletoGoalRadians());
 }
+//cam controls
+public void forceOff(){
+
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  table.getEntry("ledMode").setValue(1);
+}
+
+public void forceOn(){
+
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  table.getEntry("ledMode").setValue(3);
+}
+
+public void forceBlink(){
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);
+  table.getEntry("ledMode").setValue(2);
+}
 
 
-// public void setLEDMode(LedMode ledMode) {
-//   table.getEntry("ledmode").setValue(ledMode.getValue());
-// }
+public double getCamMode() {
+  NetworkTableEntry camMode = table.getEntry("camMode");
+  double mode = camMode.getDouble(0.0);
+  return mode;
+}
+public void setCamMode(int camMode){
 
-// public LedMode getLEDMode() {
-//   NetworkTableEntry ledMode = table.getEntry("ledMode");
-//   double led = ledMode.getDouble(0.0);
-//   LedMode mode = LedMode.getByValue(led);
-//   return mode;
-// }
+  table.getEntry("camMode").setValue(camMode);
 
-// public CamMode getCamMode() {
-//   NetworkTableEntry camMode = table.getEntry("camMode");
-//   double cam = camMode.getDouble(0.0);
-//   CamMode mode = CamMode.getByValue(cam);
-//   return mode;
-// }
+}
 
 public void setPipeline(Integer pipeline) {
   if(pipeline<0){
