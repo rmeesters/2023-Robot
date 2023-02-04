@@ -50,7 +50,7 @@ public class Limelight extends CommandBase {
   @Override
   public void execute() {
 
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); // 0 for force off, 3 for
+NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); // 0 for force off, 3 for
     // force on
 NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
     // 1 for driver camera
@@ -131,15 +131,15 @@ public double DistanceToGoalInInches(){
 }
 //cam controls
 public void forceOff(){
-
+  SmartDashboard.putString("Limelight ON:", "False");
   //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
-  table.getEntry("ledMode").setValue(1);
+  // table.getEntry("ledMode").setValue(1);
 }
 
 public void forceOn(){
-
+  SmartDashboard.putString("Limelight ON:", "True");
   //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-  table.getEntry("ledMode").setValue(3);
+  //table.getEntry("ledMode").setValue(3);
 }
 
 public void forceBlink(){
@@ -151,6 +151,7 @@ public void forceBlink(){
 public double getCamMode() {
   NetworkTableEntry camMode = table.getEntry("camMode");
   double mode = camMode.getDouble(0.0);
+  SmartDashboard.putNumber("Camera Mode", mode);
   return mode;
 }
 public void setCamMode(int camMode){

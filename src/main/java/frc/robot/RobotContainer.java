@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -29,10 +30,13 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton getLL = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
+    //private final JoystickButton getLL = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+    private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private final Limelight s_limelight = new Limelight();
+    private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
     // private final Limelight s_Limelight = new Limelight();
 
 
@@ -50,6 +54,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+        s_limelightsub.getDistance();
 
     }
 
@@ -63,8 +68,10 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // getLL.onTrue(new InstantCommand(() -> s_Limelight.getLimelight()));
+        limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));
+        limeLightModeBlink.onFalse(new InstantCommand(()-> s_limelight.forceOn()));
+        //limeLightModeBlink.onTrue(new Limelight.forceBlink()); 
     }
-
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
      *
