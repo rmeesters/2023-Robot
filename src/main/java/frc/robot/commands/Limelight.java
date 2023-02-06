@@ -15,18 +15,13 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
 
-/** An example command that uses an example subsystem. */
+
 public class Limelight extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   NetworkTable table;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
   NetworkTableEntry ledmode;
-  double x;
-  double y;
-  double area;
   double led;
+  
   final double limelightmountAnglesDegrees= 0.0; //total angle - ty 
   final double limelightLensHeightInches=39.5;
   final double goalHeightInches= 29.5;
@@ -55,19 +50,14 @@ NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setN
 NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
     // 1 for driver camera
 table = NetworkTableInstance.getDefault().getTable("limelight");
-tx = table.getEntry("tx");
-ty = table.getEntry("ty");
-ta = table.getEntry("ta");
 ledmode = table.getEntry("ledMode");
-x = tx.getDouble(0.0);
-y = ty.getDouble(0.0);
-area = ta.getDouble(0.0);
+
 led = ledmode.getDouble(0.0);
 
 // post to smart dashboard periodically
-SmartDashboard.putNumber("LimelightX", x);
-SmartDashboard.putNumber("LimelightY", y);
-SmartDashboard.putNumber("LimelightArea", area);
+SmartDashboard.putNumber("LimelightX", table.getEntry("tx").getDouble(0.0));
+SmartDashboard.putNumber("LimelightY", table.getEntry("ty").getDouble(0.0));
+SmartDashboard.putNumber("LimelightArea", table.getEntry("ta").getDouble(0.0));
 SmartDashboard.putNumber("LED Mode", led);
 
     
@@ -83,17 +73,19 @@ SmartDashboard.putNumber("LED Mode", led);
     return false;
   }
   public double getTargetArea() {
-    double a = ta.getDouble(0.0);
-    return a;
+    NetworkTableEntry ta = table.getEntry("ta");
+    double area = ta.getDouble(0.0);
+    return area;
   }
 
   public double getdegRotationToTarget() {
-  
-    double x = tx.getDouble(0.0);
+    NetworkTableEntry tx = table.getEntry("tx");
+   double x = tx.getDouble(0.0);
     return x;
 }
 
 public double getdegVerticalToTarget() {
+  NetworkTableEntry ty = table.getEntry("ty");
   double y = ty.getDouble(0.0);
   return y;
 }
@@ -113,6 +105,7 @@ public double getPipelineLatency() {
 
 private void resetPilelineLatency(){
   table.getEntry("tl").setValue(0.0);
+
 }
 
 public double getAngletoGoalDegrees(){
@@ -181,6 +174,16 @@ public Integer getPipelineInt(){
   NetworkTableEntry pipeline = table.getEntry("pipeline");
   Integer pipe = (int) pipeline.getDouble(0.0);
   return pipe;
+}
+
+public boolean getIsTargetFound() {
+  NetworkTableEntry tv = table.getEntry("tv");
+  double v = tv.getDouble(0);
+  if (v == 0.0){
+      return false;
+  }else {
+      return true;
+  }
 }
 
 
