@@ -164,4 +164,21 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class ArmConstants {
+    public static final int armPivot = 0; //adjust for CAN ID
+    public static final int armRack = 0;  //adjust for CAN ID
+
+    public static final int loopIDX = 0;
+    public static final int timeoutMS = 0;
+
+    public static final double armPivotKP = 0.4; //TODO: This must be tuned to specific robot
+    public static final double armPivotKI = 0.0;
+    public static final double armPivotKD = 0.0;  
+    public static final double armPivotKF = 0.0;
+
+    public static final double armRackKP = 0.4; //TODO: This must be tuned to specific robot
+    public static final double armRackKI = 0.0;
+    public static final double armRackKD = 0.0;  
+    public static final double armRackKF = 0.0;
+  }
 }
