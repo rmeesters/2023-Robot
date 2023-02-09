@@ -167,6 +167,7 @@ public final class Constants {
   public static class ArmConstants {
     public static final int armPivot = 0; //adjust for CAN ID
     public static final int armRack = 0;  //adjust for CAN ID
+    public static final int airSupplyCAN = 0;
 
     public static final int loopIDX = 0;
     public static final int timeoutMS = 0;
@@ -180,5 +181,6 @@ public final class Constants {
     public static final double armRackKI = 0.0;
     public static final double armRackKD = 0.0;  
     public static final double armRackKF = 0.0;
+
   }
 }
