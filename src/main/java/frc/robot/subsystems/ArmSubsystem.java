@@ -4,14 +4,13 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-//import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj.PneumaticHub;
 
 public class ArmSubsystem extends SubsystemBase {
+    /* Arm Setup */
     private WPI_TalonFX armPivot;
     private WPI_TalonFX armRack;
-    armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
-    armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
     public int loopIDX = Constants.ArmConstants.loopIDX;
     public int timeoutMS = Constants.ArmConstants.timeoutMS;
     public double pivotKP = Constants.ArmConstants.armPivotKP;
@@ -23,9 +22,16 @@ public class ArmSubsystem extends SubsystemBase {
     public double rackKD = Constants.ArmConstants.armRackKI;
     public double rackKF = Constants.ArmConstants.armRackKF;
 
+    /* Solenoid Setup */
+    public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
+    private PneumaticHub armPH;
     /* Arm Absolute Encoder? */
 
     public ArmSubsystem() {
+        armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
+        armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
+        armPH = new PneumaticHub(airSupplyCAN);
+
         // Configure Arm Defaults
         armPivot.configFactoryDefault();
         armPivot.setSelectedSensorPosition(0);
@@ -61,6 +67,9 @@ public class ArmSubsystem extends SubsystemBase {
         armRack.config_kI(loopIDX, rackKI, timeoutMS);
         armRack.config_kD(loopIDX, rackKD, timeoutMS);
         armRack.config_kF(loopIDX, rackKF, timeoutMS);
+
+        // Enable Compressor
+        armPH.enableCompressorAnalog(100, 120); // Need to evaluate what we want here
 
     }
     
