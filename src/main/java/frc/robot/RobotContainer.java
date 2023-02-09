@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.autos.*;
@@ -39,7 +40,18 @@ public class RobotContainer {
     private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
     // private final Limelight s_Limelight = new Limelight();
 
+    /* Sendable Chooser and Autonomus Commands - need to work on this
+    m_autoChooser = new SendableChooser<>();
+    m_autoChooser.setDefaultOption("Test", m_Auto1);
+    m_autoChooser.addOption("Test2", m_Auto2);
 
+    SmartDashbaord.putData("Auto Selection", m_autoChooser);
+
+    private final Command m_Auto1 = 
+        new exampleAuto(s_Swerve);
+    private final Command m_auto2 = 
+        new exampleAuto(s_Swerve); */
+    
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -55,7 +67,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
         s_limelightsub.getDistance();
-
+        
     }
 
     /**
