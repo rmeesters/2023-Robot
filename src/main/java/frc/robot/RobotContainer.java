@@ -36,21 +36,26 @@ public class RobotContainer {
     private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
     private final Limelight s_limelight = new Limelight();
     private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
     // private final Limelight s_Limelight = new Limelight();
 
-    /* Sendable Chooser and Autonomus Commands - need to work on this
-    m_autoChooser = new SendableChooser<>();
-    m_autoChooser.setDefaultOption("Test", m_Auto1);
-    m_autoChooser.addOption("Test2", m_Auto2);
+    /* Sendable Chooser and Autonomus Commands - need to work on this */
+    private static SendableChooser<Command> autoChooser;
+    private final Command m_autoOne = new exampleAuto(s_Swerve);
+    private final Command m_autoTwo = new exampleAuto(s_Swerve); 
 
-    SmartDashbaord.putData("Auto Selection", m_autoChooser);
+    /* m_autoChooser = new SendableChooser<>();
+    m_autoChooser.setDefaultOption("Test", m_Auto1);
+    m_autoChooser.addOption("Test2", m_Auto2); 
+
+    SmartDashbaord.putData("Auto Selection", m_autoChooser); */
 
     private final Command m_Auto1 = 
         new exampleAuto(s_Swerve);
     private final Command m_auto2 = 
-        new exampleAuto(s_Swerve); */
+        new exampleAuto(s_Swerve);
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -68,6 +73,11 @@ public class RobotContainer {
         configureButtonBindings();
         s_limelightsub.getDistance();
         
+        // Autonomous Sendable Chooser
+        autoChooser = new SendableChooser<Command>();
+        autoChooser.setDefaultOption("Auto One", m_autoOne);
+        autoChooser.addOption("Auto Two", m_autoTwo);
+        SmartDashboard.putData("Auto mode", autoChooser);   
     }
 
     /**
@@ -91,6 +101,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        //return new exampleAuto(s_Swerve);
+        return autoChooser.getSelected();
     }
 }
