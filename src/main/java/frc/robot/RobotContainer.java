@@ -52,10 +52,10 @@ public class RobotContainer {
 
     SmartDashbaord.putData("Auto Selection", m_autoChooser); */
 
-    private final Command m_Auto1 = 
+    /* private final Command m_Auto1 = 
         new exampleAuto(s_Swerve);
     private final Command m_auto2 = 
-        new exampleAuto(s_Swerve);
+        new exampleAuto(s_Swerve); */
     
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
