@@ -16,66 +16,35 @@ import edu.wpi.first.wpilibj.Notifier;
 public class LimelightsubSystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
 
-  NetworkTable table;
-  NetworkTableEntry tx;
-  NetworkTableEntry ty;
-  NetworkTableEntry ta;
-  NetworkTableEntry ledmode;
-  double x;
-  double y;
-  double area;
-  double led;
+ 
   final double limelightmountAnglesDegrees= 0.0;
   final double limelightLensHeightInches=39.5;
   final double goalHeightInches= 29.5;
   final double distanceDiffToTarget = -9.25;
-
+  NetworkTable table;
+  NetworkTableEntry ledmode;
+  double led;
   
 
   public LimelightsubSystem() {
-    // Initialize and Limelight parmeters
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); // 0 for force off, 3 for
-                                                                                              // force on
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
-                                                                                              // 1 for driver camera
-      table = NetworkTableInstance.getDefault().getTable("limelight");
-          tx = table.getEntry("tx");
-          ty = table.getEntry("ty");
-          ta = table.getEntry("ta");
-          ledmode = table.getEntry("ledMode");
-          x = tx.getDouble(0.0);
-          y = ty.getDouble(0.0);
-          area = ta.getDouble(0.0);
-          led = ledmode.getDouble(0.0);
+    // force on
+NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
+    // 1 for driver camera
+table = NetworkTableInstance.getDefault().getTable("limelight");
+ledmode = table.getEntry("ledMode");
 
-          // post to smart dashboard periodically
-          SmartDashboard.putNumber("LimelightX", x);
-          SmartDashboard.putNumber("LimelightY", y);
-          SmartDashboard.putNumber("LimelightArea", area);
-          SmartDashboard.putNumber("LED Mode", led);
+led = ledmode.getDouble(0.0);
+
+// post to smart dashboard periodically
+SmartDashboard.putNumber("LimelightX", table.getEntry("tx").getDouble(0.0));
+SmartDashboard.putNumber("LimelightY", table.getEntry("ty").getDouble(0.0));
+SmartDashboard.putNumber("LimelightArea", table.getEntry("ta").getDouble(0.0));
+SmartDashboard.putNumber("LED Mode", led);
+
           }
 
-  // Periodic call for limelight data
-  // public CommandBase getLimelight() {
-  //   return {
-  //         // Get base info and push to smartdashboard
-  //         table = NetworkTableInstance.getDefault().getTable("limelight");
-  //         tx = table.getEntry("tx");
-  //         ty = table.getEntry("ty");
-  //         ta = table.getEntry("ta");
-  //         ledmode = table.getEntry("ledMode");
-  //         x = tx.getDouble(0.0);
-  //         y = ty.getDouble(0.0);
-  //         area = ta.getDouble(0.0);
-  //         led = ledmode.getDouble(0.0);
 
-  //         // post to smart dashboard periodically
-  //         SmartDashboard.putNumber("LimelightX", x);
-  //         SmartDashboard.putNumber("LimelightY", y);
-  //         SmartDashboard.putNumber("LimelightArea", area);
-  //         SmartDashboard.putNumber("LED Mode", led);
-  //       };
-  // }
 
   /**
    * Put in code to get distance here
@@ -93,17 +62,19 @@ public class LimelightsubSystem extends SubsystemBase {
   }
 
   public double getTargetArea() {
-    double a = ta.getDouble(0.0);
-    return a;
+    NetworkTableEntry ta = table.getEntry("ta");
+    double area = ta.getDouble(0.0);
+    return area;
   }
 
   public double getdegRotationToTarget() {
-  
-    double x = tx.getDouble(0.0);
+    NetworkTableEntry tx = table.getEntry("tx");
+   double x = tx.getDouble(0.0);
     return x;
 }
 
 public double getdegVerticalToTarget() {
+  NetworkTableEntry ty = table.getEntry("ty");
   double y = ty.getDouble(0.0);
   return y;
 }
@@ -123,6 +94,7 @@ public double getPipelineLatency() {
 
 private void resetPilelineLatency(){
   table.getEntry("tl").setValue(0.0);
+
 }
 
 public double getAngletoGoalDegrees(){
@@ -139,25 +111,36 @@ public double getAngletoGoalRadians(){
 public double DistanceToGoalInInches(){
   return (goalHeightInches- limelightLensHeightInches)/Math.tan(this.getAngletoGoalRadians());
 }
+//cam controls
+public void forceOff(){
+  SmartDashboard.putString("Limelight ON:", "False");
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(1);
+  // table.getEntry("ledMode").setValue(1);
+}
+
+public void forceOn(){
+  SmartDashboard.putString("Limelight ON:", "True");
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+  //table.getEntry("ledMode").setValue(3);
+}
+
+public void forceBlink(){
+  //NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(2);
+  table.getEntry("ledMode").setValue(2);
+}
 
 
-// public void setLEDMode(LedMode ledMode) {
-//   table.getEntry("ledmode").setValue(ledMode.getValue());
-// }
+public double getCamMode() {
+  NetworkTableEntry camMode = table.getEntry("camMode");
+  double mode = camMode.getDouble(0.0);
+  SmartDashboard.putNumber("Camera Mode", mode);
+  return mode;
+}
+public void setCamMode(int camMode){
 
-// public LedMode getLEDMode() {
-//   NetworkTableEntry ledMode = table.getEntry("ledMode");
-//   double led = ledMode.getDouble(0.0);
-//   LedMode mode = LedMode.getByValue(led);
-//   return mode;
-// }
+  table.getEntry("camMode").setValue(camMode);
 
-// public CamMode getCamMode() {
-//   NetworkTableEntry camMode = table.getEntry("camMode");
-//   double cam = camMode.getDouble(0.0);
-//   CamMode mode = CamMode.getByValue(cam);
-//   return mode;
-// }
+}
 
 public void setPipeline(Integer pipeline) {
   if(pipeline<0){
@@ -182,27 +165,16 @@ public Integer getPipelineInt(){
   return pipe;
 }
 
-// public void setStream(StreamType stream) {
-//   table.getEntry("stream").setValue(stream.getValue());
-// }
-
-// public StreamType getStream() {
-//   NetworkTableEntry stream = table.getEntry("stream");
-//   double st = stream.getDouble(0.0);
-//   StreamType mode = StreamType.getByValue(st);
-//   return mode;
-// }
-// public void setSnapshot(Snapshot snapshot) {
-//   table.getEntry("snapshot").setValue(snapshot.getValue());
-// }
-
-// public Snapshot getSnapshot() {
-//   NetworkTableEntry snapshot = table.getEntry("snapshot");
-//   double snshot = snapshot.getDouble(0.0);
-//   Snapshot mode = Snapshot.getByValue(snshot );        
-//   return mode;
-// }
-
+public boolean getIsTargetFound() {
+  NetworkTableEntry tv = table.getEntry("tv");
+  double v = tv.getDouble(0);
+  if (v == 0.0){
+      return false;
+  }else {
+      return true;
+  }
+}
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
