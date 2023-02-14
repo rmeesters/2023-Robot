@@ -29,20 +29,20 @@ public class LimelightsubSystem extends SubsystemBase {
   public LimelightsubSystem() {
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3); // 0 for force off, 3 for
     // force on
-NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0); // 0 for vision processor,
     // 1 for driver camera
-table = NetworkTableInstance.getDefault().getTable("limelight");
-ledmode = table.getEntry("ledMode");
+    table = NetworkTableInstance.getDefault().getTable("limelight");
+    ledmode = table.getEntry("ledMode");
 
-led = ledmode.getDouble(0.0);
+    led = ledmode.getDouble(0.0);
 
-// post to smart dashboard periodically
-SmartDashboard.putNumber("LimelightX", table.getEntry("tx").getDouble(0.0));
-SmartDashboard.putNumber("LimelightY", table.getEntry("ty").getDouble(0.0));
-SmartDashboard.putNumber("LimelightArea", table.getEntry("ta").getDouble(0.0));
-SmartDashboard.putNumber("LED Mode", led);
+    // post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", table.getEntry("tx").getDouble(0.0));
+    SmartDashboard.putNumber("LimelightY", table.getEntry("ty").getDouble(0.0));
+    SmartDashboard.putNumber("LimelightArea", table.getEntry("ta").getDouble(0.0));
+    SmartDashboard.putNumber("LED Mode", led);
 
-          }
+  }
 
 
 
