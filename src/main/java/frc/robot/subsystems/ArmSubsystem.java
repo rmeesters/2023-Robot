@@ -76,7 +76,8 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        SmartDashboard.putNumber("Compressor Value", armPH.getPressure(0));
+        SmartDashboard.putNumber("Compressor PSI", armPH.getPressure(0));
+        SmartDashboard.putNumber("Compressor Voltage", armPH.getAnalogVoltage(0));
     }
 
     public void goPivotToPosition(double position, boolean on) {
