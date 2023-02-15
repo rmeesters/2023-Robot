@@ -165,9 +165,9 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class ArmConstants {
-    public static final int armPivot = 0; //adjust for CAN ID
-    public static final int armRack = 0;  //adjust for CAN ID
-    public static final int airSupplyCAN = 0;
+    public static final int armPivot = 15; //adjust for CAN ID
+    public static final int armRack = 16;  //adjust for CAN ID
+    public static final int airSupplyCAN = 17;
 
     public static final int loopIDX = 0;
     public static final int timeoutMS = 0;

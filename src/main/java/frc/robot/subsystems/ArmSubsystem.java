@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ArmSubsystem extends SubsystemBase {
     /* Arm Setup */
@@ -31,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
         armPH = new PneumaticHub(airSupplyCAN);
-
+        
         // Configure Arm Defaults
         armPivot.configFactoryDefault();
         armPivot.setSelectedSensorPosition(0);
@@ -69,13 +70,13 @@ public class ArmSubsystem extends SubsystemBase {
         armRack.config_kF(loopIDX, rackKF, timeoutMS);
 
         // Enable Compressor
-        armPH.enableCompressorAnalog(100, 120); // Need to evaluate what we want here
-
+        armPH.enableCompressorAnalog(110, 120);
     }
     
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putNumber("Compressor Value", armPH.getPressure(0));
     }
 
     public void goPivotToPosition(double position, boolean on) {
