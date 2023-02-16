@@ -23,6 +23,7 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    // private final PS4Controller PS4 = new PS4Controller(0);
 
     /* Drive Controls */
     private final int translationAxis = PS4Controller.Axis.kLeftY.value;
@@ -31,9 +32,9 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
-    //private final JoystickButton getLL = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
@@ -43,20 +44,9 @@ public class RobotContainer {
 
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
-    private final Command m_autoOne = new exampleAuto(s_Swerve);
+    private final Command m_autoOne = new station1Auto(s_Swerve, s_ArmSubsystem);
     private final Command m_autoTwo = new exampleAuto(s_Swerve); 
 
-    /* m_autoChooser = new SendableChooser<>();
-    m_autoChooser.setDefaultOption("Test", m_Auto1);
-    m_autoChooser.addOption("Test2", m_Auto2); 
-
-    SmartDashbaord.putData("Auto Selection", m_autoChooser); */
-
-    /* private final Command m_Auto1 = 
-        new exampleAuto(s_Swerve);
-    private final Command m_auto2 = 
-        new exampleAuto(s_Swerve); */
-    
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -88,8 +78,11 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
+        
+        enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.enableVac(true)));
+        enableVac.onFalse(new InstantCommand(() -> s_ArmSubsystem.enableVac(false)));  //Not sure this is required
+
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        // getLL.onTrue(new InstantCommand(() -> s_Limelight.getLimelight()));
         limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));
         limeLightModeBlink.onFalse(new InstantCommand(()-> s_limelight.forceOn()));
         //limeLightModeBlink.onTrue(new Limelight.forceBlink()); 

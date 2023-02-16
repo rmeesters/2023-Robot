@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticHub;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -23,16 +25,19 @@ public class ArmSubsystem extends SubsystemBase {
     public double rackKD = Constants.ArmConstants.armRackKI;
     public double rackKF = Constants.ArmConstants.armRackKF;
 
-    /* Solenoid Setup */
+    /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
+    Solenoid vacSolPH = new Solenoid(PneumaticsModuleType.REVPH, 1);
+    
+
     /* Arm Absolute Encoder? */
 
     public ArmSubsystem() {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
         armPH = new PneumaticHub(airSupplyCAN);
-        
+                
         // Configure Arm Defaults
         armPivot.configFactoryDefault();
         armPivot.setSelectedSensorPosition(0);
@@ -80,6 +85,15 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Compressor Voltage", armPH.getAnalogVoltage(0));
     }
 
+    public void enableVac(boolean on) {
+        if(on) {
+            vacSolPH.set(true);
+        }
+        else {
+            vacSolPH.set(false);
+        }
+    }
+    
     public void goPivotToPosition(double position, boolean on) {
         if(on) {
             armPivot.set(ControlMode.Position, position);
