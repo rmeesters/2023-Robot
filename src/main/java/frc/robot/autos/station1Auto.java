@@ -1,6 +1,8 @@
 package frc.robot.autos;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -19,7 +21,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 public class station1Auto extends SequentialCommandGroup {
-    public station1Auto(Swerve s_Swerve, ArmSubsystem s_ArmSubsystem){
+    Swerve s_Swerve = RobotContainer.s_Swerve;
+    ArmSubsystem s_ArmSubsystem = RobotContainer.s_ArmSubsystem;
+    public station1Auto(){
         TrajectoryConfig config =
             new TrajectoryConfig(
                     Constants.AutoConstants.kMaxSpeedMetersPerSecond,
@@ -37,6 +41,8 @@ public class station1Auto extends SequentialCommandGroup {
                 new Pose2d(-1, 0, new Rotation2d(0)),
                 config);
 
+
+                
         var thetaController =
             new ProfiledPIDController(
                 Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);

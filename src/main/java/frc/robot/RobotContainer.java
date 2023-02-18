@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -33,22 +36,23 @@ public class RobotContainer {
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton armPivot1 = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    private final JoystickButton arm1 = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    private final JoystickButton arm2 = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
-    private final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
+    public static final Swerve s_Swerve = new Swerve();
+    public static final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
     //private final Limelight s_limelight = new Limelight();
     private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
     // private final Limelight s_Limelight = new Limelight();
 
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
-    private final Command m_autoOne = new station1Auto(s_Swerve, s_ArmSubsystem);
-    private final Command m_autoTwo = new exampleAuto(s_Swerve); 
+    private final Command m_autoOne = new station1Auto();
+    private final Command m_autoTwo = new exampleAuto(); 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -81,13 +85,12 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-
         // Vacume
-        enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.enableVac(true)));
-        enableVac.whileFalse(new InstantCommand(() -> s_ArmSubsystem.enableVac(false)));  //Not sure this is required
+        enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.toggleVac()));
 
-        // Arm
-        armPivot1.onTrue(new InstantCommand(() -> s_ArmSubsystem.goPivotToPosition(70)));
+        /* Arm */
+        arm1.onTrue(new adjustArm(70,12,true,true,true));
+        arm2.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
 
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));

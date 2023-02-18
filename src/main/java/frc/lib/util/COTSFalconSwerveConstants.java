@@ -89,7 +89,7 @@ public class COTSFalconSwerveConstants {
         double wheelDiameter = Units.inchesToMeters(4.0);
  
         /** 49 : 1 */
-        double angleGearRatio = (10.0 / 1.0); //RM Set for Gnomes swerver 0114 - change from 49 to 10 for old robot 0124
+        double angleGearRatio = (49.0 / 1.0); //RM Set for Gnomes swerver 0114 - change from 49 to 10 for old robot 0124
  
         double angleKP = 0.6;
         double angleKI = 0.0;
