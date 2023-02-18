@@ -6,29 +6,32 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.PneumaticHub;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ArmSubsystem extends SubsystemBase {
+    private static final double PIVOTCONST = -975.64444444;
+    private static final double RACKCONST = 15979.6178;
+
     /* Arm Setup */
     private WPI_TalonFX armPivot;
     private WPI_TalonFX armRack;
-    public int loopIDX = Constants.ArmConstants.loopIDX;
-    public int timeoutMS = Constants.ArmConstants.timeoutMS;
-    public double pivotKP = Constants.ArmConstants.armPivotKP;
-    public double pivotKI = Constants.ArmConstants.armPivotKI;
-    public double pivotKD = Constants.ArmConstants.armPivotKD;
-    public double pivotKF = Constants.ArmConstants.armPivotKF;
-    public double rackKP = Constants.ArmConstants.armRackKP;
-    public double rackKI = Constants.ArmConstants.armRackKI;
-    public double rackKD = Constants.ArmConstants.armRackKI;
-    public double rackKF = Constants.ArmConstants.armRackKF;
+    int loopIDX = Constants.ArmConstants.loopIDX;
+    int timeoutMS = Constants.ArmConstants.timeoutMS;
+    double pivotKP = Constants.ArmConstants.armPivotKP;
+    double pivotKI = Constants.ArmConstants.armPivotKI;
+    double pivotKD = Constants.ArmConstants.armPivotKD;
+    double pivotKF = Constants.ArmConstants.armPivotKF;
+    double rackKP = Constants.ArmConstants.armRackKP;
+    double rackKI = Constants.ArmConstants.armRackKI;
+    double rackKD = Constants.ArmConstants.armRackKI;
+    double rackKF = Constants.ArmConstants.armRackKF;
+    boolean vacOn = false;
 
     /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
-    Solenoid vacSolPH = new Solenoid(PneumaticsModuleType.REVPH, 0);
+    Solenoid vacSolPH;
     
 
     /* Arm Absolute Encoder? */
@@ -36,7 +39,10 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
+
+        // Pnumatics init
         armPH = new PneumaticHub(airSupplyCAN);
+        vacSolPH = armPH.makeSolenoid(0);
                 
         // Configure Arm Defaults
         armPivot.configFactoryDefault();
@@ -81,35 +87,24 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putBoolean("Solenoid Value", vacSolPH.get());
         SmartDashboard.putNumber("Compressor PSI", armPH.getPressure(0));
         SmartDashboard.putNumber("Compressor Voltage", armPH.getAnalogVoltage(0));
+        SmartDashboard.putNumber("Pivot enc", armPivot.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Rack enc", armRack.getSelectedSensorPosition());
+        vacSolPH.set(vacOn);
     }
 
     public void enableVac(boolean on) {
-        if(on) {
-            vacSolPH.set(true);
-        }
-        else {
-            vacSolPH.set(false);
-        }
+        this.vacOn = on;
     }
     
-    public void goPivotToPosition(double position, boolean on) {
-        if(on) {
-            armPivot.set(ControlMode.Position, position);
-        }
-        else {
-            armPivot.set(ControlMode.PercentOutput, 0);
-        }
+    public void goPivotToPosition(double degrees) {
+        armPivot.set(ControlMode.Position, (degrees-Constants.ArmConstants.pivotBottomAngle)/PIVOTCONST);
     }
 
-    public void goRackToPosition(double position, boolean on) {
-        if(on) {
-            armRack.set(ControlMode.Position, position);
-        }
-        else {
-            armRack.set(ControlMode.PercentOutput, 0); 
-        }
+    public void goRackToPosition(double inches) {
+        armRack.set(ControlMode.Position, inches/RACKCONST);
     }
 
     public double getPivotPosition() {

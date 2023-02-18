@@ -165,6 +165,7 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class ArmConstants {
+    public static final double pivotBottomAngle = 37.5;
     public static final int armPivot = 15; //adjust for CAN ID
     public static final int armRack = 16;  //adjust for CAN ID
     public static final int airSupplyCAN = 17;

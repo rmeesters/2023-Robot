@@ -56,7 +56,7 @@ public class station1Auto extends SequentialCommandGroup {
 
         addCommands(
             new SequentialCommandGroup(
-                new InstantCommand(() -> s_ArmSubsystem.goRackToPosition(10, isFinished())),
+                new InstantCommand(() -> s_ArmSubsystem.goRackToPosition(10)),
                 new InstantCommand(() -> s_ArmSubsystem.enableVac(true)),
                 new InstantCommand(() -> s_ArmSubsystem.enableVac(false))
             ),

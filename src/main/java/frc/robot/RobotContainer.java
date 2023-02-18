@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -31,6 +33,7 @@ public class RobotContainer {
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
     /* Driver Buttons */
+    private final JoystickButton armPivot1 = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
@@ -78,9 +81,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        
+
+        // Vacume
         enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.enableVac(true)));
-        enableVac.onFalse(new InstantCommand(() -> s_ArmSubsystem.enableVac(false)));  //Not sure this is required
+        enableVac.whileFalse(new InstantCommand(() -> s_ArmSubsystem.enableVac(false)));  //Not sure this is required
+
+        // Arm
+        armPivot1.onTrue(new InstantCommand(() -> s_ArmSubsystem.goPivotToPosition(70)));
 
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));
