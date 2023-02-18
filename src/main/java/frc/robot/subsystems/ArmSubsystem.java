@@ -28,7 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
     /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
-    Solenoid vacSolPH = new Solenoid(PneumaticsModuleType.REVPH, 1);
+    Solenoid vacSolPH = new Solenoid(PneumaticsModuleType.REVPH, 0);
     
 
     /* Arm Absolute Encoder? */
