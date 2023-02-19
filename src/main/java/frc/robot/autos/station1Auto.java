@@ -5,6 +5,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.commands.adjustArm;
 
 import java.util.List;
 
@@ -61,14 +62,10 @@ public class station1Auto extends SequentialCommandGroup {
 
 
         addCommands(
-            new SequentialCommandGroup(
-                new InstantCommand(() -> s_ArmSubsystem.goRackToPosition(10)),
-                new InstantCommand(() -> s_ArmSubsystem.enableVac(true)),
-                new InstantCommand(() -> s_ArmSubsystem.enableVac(false))
-            ),
+            new adjustArm(70, 12, true, false, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,false,false,false),
             new InstantCommand(() -> s_Swerve.resetOdometry(autoTrajectory.getInitialPose())),
-            swerveControllerCommand
-        
+            swerveControllerCommand        
         );
     }
 }
