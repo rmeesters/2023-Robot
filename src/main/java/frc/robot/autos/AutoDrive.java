@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -46,6 +47,9 @@ public class AutoDrive extends SequentialCommandGroup {
   public AutoDrive(List<Pose2d> points) {
     this();
     exampleTrajectory = TrajectoryGenerator.generateTrajectory(points, config);
+    SmartDashboard.putNumber("auto initial pose x",exampleTrajectory.getInitialPose().getX());
+    SmartDashboard.putNumber("auto initial pose x",exampleTrajectory.getInitialPose().getY());
+    SmartDashboard.putString("auto trajectory", exampleTrajectory.toString());
     addCommands(
         new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
         generateSwerveControllerCommand()
