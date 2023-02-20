@@ -32,7 +32,7 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
+    public static final Joystick driver = new Joystick(0);
     // private final PS4Controller PS4 = new PS4Controller(0);
 
     /* Drive Controls */
@@ -68,7 +68,7 @@ public class RobotContainer {
     //new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false),
     new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0)))))
     );
-    private final Command m_autoTwo = new exampleAuto(); 
+    private final Command m_autoTwo = new BalanceRobotCommand(); 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {

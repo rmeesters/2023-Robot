@@ -83,7 +83,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         // Enable Compressor and fan
         armPH.enableCompressorAnalog(110, 120);
-        fanPH.set(true);
+        fanPH.set(true);    
 
     }
     
@@ -108,11 +108,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
     
     public void goPivotToPosition(double degrees) {
-        armPivot.set(ControlMode.Position, (degrees-Constants.ArmConstants.pivotBottomAngle)*PIVOTCONST);
+        armPivot.set(ControlMode.MotionMagic, (degrees-Constants.ArmConstants.pivotBottomAngle)*PIVOTCONST);
     }
 
     public void goRackToPosition(double inches) {
-        armRack.set(ControlMode.Position, inches*RACKCONST);
+        armRack.set(ControlMode.MotionMagic, inches*RACKCONST);
     }
 
     public double getPivotAngle() {

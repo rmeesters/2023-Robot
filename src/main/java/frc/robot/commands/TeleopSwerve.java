@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
 
 import java.util.function.BooleanSupplier;
@@ -8,6 +9,8 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
@@ -17,6 +20,7 @@ public class TeleopSwerve extends CommandBase {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
+    Joystick driver = RobotContainer.driver;
 
     public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup) {
         this.s_Swerve = s_Swerve;
@@ -29,11 +33,28 @@ public class TeleopSwerve extends CommandBase {
     }
 
     @Override
-    public void execute() {
+    public void execute() { 
+        SmartDashboard.putNumber("pov", driver.getPOV());
+
         /* Get Values, Deadband*/
         double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
         double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
         double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
+
+        switch (driver.getPOV()) {
+            case 0:
+            translationVal += Constants.Swerve.DPADSPEED;
+            break;
+            case 90:
+            strafeVal -= Constants.Swerve.DPADSPEED;
+            break;
+            case 180:
+            translationVal -= Constants.Swerve.DPADSPEED;
+            break;
+            case 270:
+            strafeVal += Constants.Swerve.DPADSPEED;
+            break;
+        }
 
         /* Drive */
         s_Swerve.drive(

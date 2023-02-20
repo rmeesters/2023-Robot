@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Swerve;
@@ -22,23 +24,28 @@ public class BalanceRobotCommand extends CommandBase {
 
   public void balanceSwerve(){
     SmartDashboard.putBoolean("Is robot balanced", robotBalanced);
-    SmartDashboard.putNumber("Roll Val", s_Swerve.gyro.getRoll());
+    SmartDashboard.putNumber("Roll Val", s_Swerve.gyro.getPitch());
 
-        if(s_Swerve.gyro.getRoll()> TOLERANCE_VALUE){
+        if(s_Swerve.gyro.getPitch()> TOLERANCE_VALUE){
           robotBalanced=false;
-          
-            // s_Swerve.drive(
-            //     new Translation2d(0.1, 0.0).times(SPEED_BALANCING ), 
-            //     0.0 * SPEED_BALANCING, 
-            //  false, 
-            //  true);
+            s_Swerve.drive(
+                new Translation2d(-0.1, 0.0).times(SPEED_BALANCING), 
+                0.0 * SPEED_BALANCING, 
+             false, 
+             true);
         
         //  GO FORWARDS
         }
 
-        else if(s_Swerve.gyro.getRoll()< -(TOLERANCE_VALUE)){
+        else if(s_Swerve.gyro.getPitch()< -(TOLERANCE_VALUE)){
 
             robotBalanced=false;
+             s_Swerve.drive(
+                new Translation2d(0.1, 0.0).times(SPEED_BALANCING), 
+                0.0 * SPEED_BALANCING, 
+             false, 
+             true);
+           // GO BACKWARDS
 
         }
 
@@ -46,12 +53,7 @@ public class BalanceRobotCommand extends CommandBase {
             
             robotBalanced=true;
 
-            // s_Swerve.drive(
-            //     new Translation2d(-0.1, 0.0).times(SPEED_BALANCING), 
-            //     0.0 * SPEED_BALANCING, 
-            //  false, 
-            //  true);
-            //GO BACKWARDS
+           
         }
 
 
