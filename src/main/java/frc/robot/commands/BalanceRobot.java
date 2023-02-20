@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 public class BalanceRobot {
     private Swerve s_Swerve;
+    private final double SPEED_BALANCING = 1;
     final private double TOLERANCE_VALUE = 2.0; //the tolerance val is 2 degrees
     //TrajectoryConfig config;
     public BalanceRobot(){
@@ -38,22 +39,22 @@ public class BalanceRobot {
 
         while(isRobotBalanced()==false){
 
-            while(s_Swerve.gyro.getRoll()> TOLERANCE_VALUE){
+            if(s_Swerve.gyro.getRoll()> TOLERANCE_VALUE){
            
                 s_Swerve.drive(
-                    new Translation2d(0.1, 0.0).times(Constants.Swerve.maxSpeed), 
-                    0.0 * Constants.Swerve.maxAngularVelocity, 
+                    new Translation2d(0.1, 0.0).times(SPEED_BALANCING ), 
+                    0.0 * SPEED_BALANCING, 
                  false, 
                  true);
             
             //  GO FORWARDS
             }
 
-            while(s_Swerve.gyro.getRoll()< TOLERANCE_VALUE){
+            else if(s_Swerve.gyro.getRoll()< TOLERANCE_VALUE){
 
                 s_Swerve.drive(
-                    new Translation2d(-0.1, 0.0).times(Constants.Swerve.maxSpeed), 
-                    0.0 * Constants.Swerve.maxAngularVelocity, 
+                    new Translation2d(-0.1, 0.0).times(SPEED_BALANCING), 
+                    0.0 * SPEED_BALANCING, 
                  false, 
                  true);
                 //GO BACKWARDS
