@@ -108,7 +108,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
     
     public void goPivotToPosition(double degrees) {
-        SmartDashboard.putNumber("pivot test 2", (degrees-Constants.ArmConstants.pivotBottomAngle)*PIVOTCONST);
         armPivot.set(ControlMode.Position, (degrees-Constants.ArmConstants.pivotBottomAngle)*PIVOTCONST);
     }
 
