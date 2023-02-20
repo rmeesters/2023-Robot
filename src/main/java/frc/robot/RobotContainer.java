@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import edu.wpi.first.wpilibj.GenericHID;
@@ -8,12 +10,15 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -56,7 +61,13 @@ public class RobotContainer {
 
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
-    private final Command m_autoOne = new station1Auto();
+    //private final Command m_autoOne = new station1Auto();
+    private final Command m_autoOne = new SequentialCommandGroup(
+    //new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0))))),
+    //new adjustArm(85, 15.5, false, false, true),
+    //new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false),
+    new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0)))))
+    );
     private final Command m_autoTwo = new exampleAuto(); 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
