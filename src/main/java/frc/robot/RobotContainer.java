@@ -66,7 +66,7 @@ public class RobotContainer {
     //new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0))))),
     //new adjustArm(85, 15.5, false, false, true),
     //new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false),
-    new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0)))))
+    new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-1, 0, new Rotation2d(0)))),true)
     );
     private final Command m_autoTwo = new BalanceRobotCommand(); 
 

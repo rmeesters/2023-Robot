@@ -33,19 +33,19 @@ public class AutoDrive extends SequentialCommandGroup {
   Trajectory exampleTrajectory;
   ProfiledPIDController thetaController;
 
-  public AutoDrive() {
+  public AutoDrive(boolean reversed) {
     config = new TrajectoryConfig(
         Constants.AutoConstants.kMaxSpeedMetersPerSecond,
         Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        .setKinematics(Constants.Swerve.swerveKinematics);
+        .setKinematics(Constants.Swerve.swerveKinematics).setReversed(reversed);
 
     thetaController = new ProfiledPIDController(
         Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
-  public AutoDrive(List<Pose2d> points) {
-    this();
+  public AutoDrive(List<Pose2d> points, boolean reversed) {
+    this(reversed);
     exampleTrajectory = TrajectoryGenerator.generateTrajectory(points, config);
     SmartDashboard.putNumber("auto initial pose x",exampleTrajectory.getInitialPose().getX());
     SmartDashboard.putNumber("auto initial pose x",exampleTrajectory.getInitialPose().getY());

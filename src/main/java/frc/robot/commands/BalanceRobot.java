@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 
-public class BalanceRobot {
+public class BalanceRobot  {
     private Swerve s_Swerve;
     private final double SPEED_BALANCING = 1;
     final private double TOLERANCE_VALUE = 2.0;

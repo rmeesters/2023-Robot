@@ -37,7 +37,7 @@ public class station1Auto extends SequentialCommandGroup {
                 // Start at the origin facing the +X direction
                 new Pose2d(0, 0, new Rotation2d(0)),
                 // Drive straight backwards through these points
-                List.of(new Translation2d(-0.25, 0), new Translation2d(-0.5, 0)),
+                List.of(new Translation2d(-0.25, -0.25), new Translation2d(-0.5, -0.5)),
                 // End 1 meter straight behind where we started, facing forward
                 new Pose2d(-1, 0, new Rotation2d(0)),
                 config);
@@ -62,8 +62,8 @@ public class station1Auto extends SequentialCommandGroup {
 
 
         addCommands(
-            new adjustArm(70, 12, true, false, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,false,false,false),
+            //new adjustArm(70, 12, true, false, true),
+            // new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,false,false,false),
             new InstantCommand(() -> s_Swerve.resetOdometry(autoTrajectory.getInitialPose())),
             swerveControllerCommand        
         );
