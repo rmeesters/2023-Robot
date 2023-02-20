@@ -36,11 +36,16 @@ public class RobotContainer {
     private final int rotationAxis = PS4Controller.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton arm1 = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
-    private final JoystickButton arm2 = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton lowPos = new JoystickButton(driver, PS4Controller.Button.kCross.value);
+    private final JoystickButton medPos = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    private final JoystickButton highPos = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton arm2 = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
-    private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    // private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
+    
+
+
     private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
     /* Subsystems */
     public static final Swerve s_Swerve = new Swerve();
@@ -89,9 +94,14 @@ public class RobotContainer {
         enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.toggleVac()));
 
         /* Arm */
-        arm1.onTrue(new adjustArm(70,12,true,true,true));
+        //arm1.onTrue(new adjustArm(70,12,true,true,true));
         arm2.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
-
+        
+        lowPos.onTrue(new adjustArm(47.5,17,true,true,true));
+        medPos.onTrue(new adjustArm(85, 15.5, false, false, true));
+        highPos.onTrue(new adjustArm(98, 30.5, false, false, true));
+        //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
+        
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));
         // limeLightModeBlink.onFalse(new InstantCommand(()-> s_limelight.forceOn()));
