@@ -47,6 +47,11 @@ public class RobotContainer {
     private final JoystickButton arm2 = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+    private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
+    private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
+    private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+    private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
+
     // private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     
 
@@ -112,6 +117,24 @@ public class RobotContainer {
         medPos.onTrue(new adjustArm(85, 15.5, false, false, true));
         highPos.onTrue(new adjustArm(98, 30.5, false, false, true));
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
+
+       groundPickUp.onTrue(new adjustArm(47.5,17,true,true,true));
+        groundPickUp.onFalse(new SequentialCommandGroup(
+            new adjustArm(60, 17, true, false, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false)
+
+        ));
+
+        humanPickUp.onTrue(new adjustArm(85,2,true,true,true));
+        humanPickUp.onFalse( new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false)
+        );
+
+        
+        manualIncreaseArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0.5)));
+        manualIncreaseArm.onFalse(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0)));
+        manualDecreasrArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(-0.5)));
+        manualDecreasrArm.onFalse(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0)));
+
         
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));

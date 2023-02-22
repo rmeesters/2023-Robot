@@ -59,15 +59,17 @@ public class ArmSubsystem extends SubsystemBase {
         // Config peak and nominal outputs
         armPivot.configNominalOutputForward(0, timeoutMS);
         armPivot.configNominalOutputReverse(0, timeoutMS);
-        armPivot.configPeakOutputForward(0.15, timeoutMS);
-        armPivot.configPeakOutputReverse(-0.15, timeoutMS);
+        armPivot.configPeakOutputForward(0.5, timeoutMS);
+        armPivot.configPeakOutputReverse(-0.5, timeoutMS);
         armPivot.setInverted(true);
         armPivot.setSensorPhase(true);
+        armPivot.configMotionAcceleration(PIVOTCONST*30);
+        armPivot.configMotionCruiseVelocity(PIVOTCONST*20);
 
         armRack.configNominalOutputForward(0, timeoutMS);
         armRack.configNominalOutputReverse(0, timeoutMS);
-        armRack.configPeakOutputForward(0.5, timeoutMS);
-        armRack.configPeakOutputReverse(-0.5, timeoutMS);
+        armRack.configPeakOutputForward(1, timeoutMS);
+        armRack.configPeakOutputReverse(-1, timeoutMS);
         armRack.setInverted(true);
         armRack.setSensorPhase(true);
 
@@ -112,8 +114,15 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void goRackToPosition(double inches) {
-        armRack.set(ControlMode.MotionMagic, inches*RACKCONST);
+        armRack.set(ControlMode.Position, inches*RACKCONST);
     }
+
+    public void manualLiftArm(double number){
+        armPivot.set(ControlMode.PercentOutput, number);
+    }
+
+    
+    
 
     public double getPivotAngle() {
         return (armPivot.getSelectedSensorPosition()/PIVOTCONST)+Constants.ArmConstants.pivotBottomAngle;
