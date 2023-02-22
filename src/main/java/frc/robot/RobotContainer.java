@@ -68,10 +68,10 @@ public class RobotContainer {
     private static SendableChooser<Command> autoChooser;
     //private final Command m_autoOne = new station1Auto();
     private final Command m_autoOne = new SequentialCommandGroup(
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, true, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
         new adjustArm(98, 30.5, true, false, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-3, 0, new Rotation2d(0)))),true)
     );
     private final Command m_autoTwo = new BalanceRobotCommand(); 
