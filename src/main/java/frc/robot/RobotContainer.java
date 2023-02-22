@@ -44,19 +44,17 @@ public class RobotContainer {
     private final JoystickButton lowPos = new JoystickButton(driver, PS4Controller.Button.kCross.value);
     private final JoystickButton medPos = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     private final JoystickButton highPos = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
     private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
-    private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
+    private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kShare.value);
     private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
     private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
     private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
 
     // private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
-    
-
-
-    private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
+    // private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
+ 
     /* Subsystems */
     public static final Swerve s_Swerve = new Swerve();
     public static final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
@@ -66,7 +64,6 @@ public class RobotContainer {
 
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
-    //private final Command m_autoOne = new station1Auto();
     private final Command m_autoOne = new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, true, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
