@@ -44,7 +44,7 @@ public class RobotContainer {
     private final JoystickButton lowPos = new JoystickButton(driver, PS4Controller.Button.kCross.value);
     private final JoystickButton medPos = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     private final JoystickButton highPos = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton arm2 = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
+    private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
     private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
@@ -68,10 +68,11 @@ public class RobotContainer {
     private static SendableChooser<Command> autoChooser;
     //private final Command m_autoOne = new station1Auto();
     private final Command m_autoOne = new SequentialCommandGroup(
-    //new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(1, 0, new Rotation2d(0))))),
-    //new adjustArm(85, 15.5, false, false, true),
-    //new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false),
-    new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-1, 0, new Rotation2d(0)))),true)
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        new adjustArm(98, 30.5, true, false, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, true),
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-3, 0, new Rotation2d(0)))),true)
     );
     private final Command m_autoTwo = new BalanceRobotCommand(); 
 
@@ -111,15 +112,20 @@ public class RobotContainer {
 
         /* Arm */
         //arm1.onTrue(new adjustArm(70,12,true,true,true));
-        arm2.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
+        armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
         
         lowPos.onTrue(new adjustArm(47.5,17,true,true,true));
-        medPos.onTrue(new adjustArm(85, 15.5, false, false, true));
+        // medPos.onTrue(new adjustArm(85, 15.5, false, false, true)); - try this Sequential Command:
+        medPos.onTrue(new SequentialCommandGroup(
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+            new adjustArm(85, 15.5, true, true, true)
+        ));
         highPos.onTrue(new adjustArm(98, 30.5, false, false, true));
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
 
        groundPickUp.onTrue(new adjustArm(47.5,17,true,true,true));
-        groundPickUp.onFalse(new SequentialCommandGroup(
+       groundPickUp.onFalse(new SequentialCommandGroup(
             new adjustArm(60, 17, true, false, true),
             new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false)
 
