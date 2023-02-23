@@ -2,8 +2,6 @@ package frc.robot;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
@@ -14,9 +12,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -139,7 +134,7 @@ public class RobotContainer {
         manualDecreasrArm.onFalse(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0)));
 
         
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+        // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
         // limeLightModeBlink.onTrue(new InstantCommand(()-> s_limelight.forceOff()));
         // limeLightModeBlink.onFalse(new InstantCommand(()-> s_limelight.forceOn()));
         //limeLightModeBlink.onTrue(new Limelight.forceBlink()); 
