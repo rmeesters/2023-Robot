@@ -3,6 +3,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.Swerve;
+import frc.robot.autos.*;
 import java.util.List;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -43,6 +44,7 @@ public class BalanceRobot  {
 
             if(s_Swerve.gyro.getRoll()> TOLERANCE_VALUE){
               robotBalanced=false;
+              new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-0.1, 0, new Rotation2d(0)))),true);
               
                 // s_Swerve.drive(
                 //     new Translation2d(0.1, 0.0).times(SPEED_BALANCING ), 
@@ -56,7 +58,7 @@ public class BalanceRobot  {
             else if(s_Swerve.gyro.getRoll()< -(TOLERANCE_VALUE)){
 
                 robotBalanced=false;
-
+                new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(0.1, 0, new Rotation2d(0)))),false);
             }
 
             else {
