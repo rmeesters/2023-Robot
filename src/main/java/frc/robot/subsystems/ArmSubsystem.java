@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 
+
 public class ArmSubsystem extends SubsystemBase {
     private static final double PIVOTCONST = 975.64444444;
     private static final double RACKCONST = -15979.6178;
@@ -31,14 +32,16 @@ public class ArmSubsystem extends SubsystemBase {
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
     Solenoid vacSolPH,fanPH;
-    
+    SendableChooser<String> colorChooser = new SendableChooser<>();
+    String selectedColor;
+  
 
     /* Arm Absolute Encoder? */
 
     public ArmSubsystem() {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
-
+        
         // Pnumatics init
         armPH = new PneumaticHub(airSupplyCAN);
         vacSolPH = armPH.makeSolenoid(0);
@@ -87,6 +90,11 @@ public class ArmSubsystem extends SubsystemBase {
         armPH.enableCompressorAnalog(110, 120);
         fanPH.set(true);    
 
+        //adding color options
+        colorChooser.setDefaultOption("Red", "red");
+        colorChooser.addOption("Green", "green");
+        colorChooser.addOption("Yellow", "yellow");
+
     }
     
     @Override
@@ -100,6 +108,17 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Compressor Regulated Voltage", armPH.get5VRegulatedVoltage());
         SmartDashboard.putNumber("Pivot enc", getPivotAngle());
         SmartDashboard.putNumber("Rack enc", armRack.getSelectedSensorPosition());
+        selectedColor= colorChooser.getSelected();
+        SmartDashboard.putData("Color Chooser",colorChooser);
+        if(armPH.getPressure(airSupplyCAN)>75){
+            selectedColor = "Green";
+        }
+        else if(armPH.getPressure(airSupplyCAN)<=75){
+            selectedColor = "Yellow";
+        }
+        else{
+            selectedColor = "Red";
+        }
     }
 
     public void enableVac(boolean on) {
