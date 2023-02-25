@@ -104,16 +104,24 @@ public class RobotContainer {
 
         /* Arm */
         //arm1.onTrue(new adjustArm(70,12,true,true,true));
-        armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
+        armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,false,false,false));
         
-        lowPos.onTrue(new adjustArm(47.5,17,true,true,true));
+        lowPos.onTrue(new SequentialCommandGroup(
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        new adjustArm(47.5,17,true,false,true)
+        ));
         // medPos.onTrue(new adjustArm(85, 15.5, false, false, true)); - try this Sequential Command:
         medPos.onTrue(new SequentialCommandGroup(
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(85, 15.5, true, true, true)
+            new adjustArm(85, 14.5, true, false, true)
         ));
-        highPos.onTrue(new adjustArm(98, 30.5, false, false, true));
+        highPos.onTrue(new SequentialCommandGroup(
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+            new adjustArm(98, 30.5, true, false, true)
+            ));
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
 
        groundPickUp.onTrue(new adjustArm(47.5,17,true,true,true));

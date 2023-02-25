@@ -4,12 +4,33 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
+import frc.robot.subsystems.Swerve;
+import frc.robot.autos.*;
+import java.util.List;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.autos.*;
+import frc.robot.subsystems.Swerve;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Swerve;
+
 
 public class BalanceRobotCommand extends CommandBase {
   /** Creates a new BalanceRobotCommand. */
@@ -28,23 +49,16 @@ public class BalanceRobotCommand extends CommandBase {
 
         if(s_Swerve.gyro.getPitch()> TOLERANCE_VALUE){
           robotBalanced=false;
-            s_Swerve.drive(
-                new Translation2d(-0.1, 0.0).times(SPEED_BALANCING), 
-                0.0 * SPEED_BALANCING, 
-             false, 
-             true);
-        
+          new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-0.1, 0, new Rotation2d(0)))),true);
+                
         //  GO FORWARDS
         }
 
         else if(s_Swerve.gyro.getPitch()< -(TOLERANCE_VALUE)){
 
-            robotBalanced=false;
-             s_Swerve.drive(
-                new Translation2d(0.1, 0.0).times(SPEED_BALANCING), 
-                0.0 * SPEED_BALANCING, 
-             false, 
-             true);
+          robotBalanced=false;
+          new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(0.1, 0, new Rotation2d(0)))),false);
+              
            // GO BACKWARDS
 
         }

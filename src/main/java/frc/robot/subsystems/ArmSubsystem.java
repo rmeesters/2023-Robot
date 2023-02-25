@@ -66,8 +66,8 @@ public class ArmSubsystem extends SubsystemBase {
         armPivot.configPeakOutputReverse(-0.5, timeoutMS);
         armPivot.setInverted(true);
         armPivot.setSensorPhase(true);
-        armPivot.configMotionAcceleration(PIVOTCONST*30);
-        armPivot.configMotionCruiseVelocity(PIVOTCONST*20);
+        armPivot.configMotionAcceleration(PIVOTCONST*20);
+        armPivot.configMotionCruiseVelocity(PIVOTCONST*10);
 
         armRack.configNominalOutputForward(0, timeoutMS);
         armRack.configNominalOutputReverse(0, timeoutMS);
