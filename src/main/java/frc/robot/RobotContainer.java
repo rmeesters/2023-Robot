@@ -85,6 +85,11 @@ public class RobotContainer {
         configureButtonBindings();
         s_limelightsub.getDistance();
         
+        // Limelight Testing
+        LimelightHelpers.setStreamMode_Standard("limelight");
+        LimelightHelpers.setCameraMode_Driver("limelight");
+        LimelightHelpers.setLEDMode_ForceOff("limelight");
+        
         // Autonomous Sendable Chooser
         autoChooser = new SendableChooser<Command>();
         autoChooser.setDefaultOption("Auto One", m_autoOne);
