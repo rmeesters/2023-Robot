@@ -46,6 +46,7 @@ public class RobotContainer {
     private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
     private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
+    private final JoystickButton balanceRobot = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
 
     // private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     // private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
@@ -123,7 +124,7 @@ public class RobotContainer {
             new adjustArm(98, 30.5, true, false, true)
             ));
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
-
+       balanceRobot.onTrue(new BalanceRobotCommand());
        groundPickUp.onTrue(new adjustArm(47.5,17,true,true,true));
        groundPickUp.onFalse(new SequentialCommandGroup(
             new adjustArm(60, 17, true, false, true),

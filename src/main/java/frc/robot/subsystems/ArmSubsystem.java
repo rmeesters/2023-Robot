@@ -110,14 +110,11 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Rack enc", armRack.getSelectedSensorPosition());
         selectedColor= colorChooser.getSelected();
         SmartDashboard.putData("Color Chooser",colorChooser);
-        if(armPH.getPressure(airSupplyCAN)>75){
-            selectedColor = "Green";
-        }
-        else if(armPH.getPressure(airSupplyCAN)<=75){
-            selectedColor = "Yellow";
+        if(armPH.getPressure(0) >75.0){
+            SmartDashboard.putBoolean("Compressor Pressure", false);
         }
         else{
-            selectedColor = "Red";
+            SmartDashboard.putBoolean("Compressor Pressure", true);
         }
     }
 
