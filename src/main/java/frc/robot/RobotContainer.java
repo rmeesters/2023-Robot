@@ -69,6 +69,36 @@ public class RobotContainer {
     );
     private final Command m_autoTwo = new BalanceRobotCommand(); 
 
+    private final Command m_stationTwo =  new SequentialCommandGroup(
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        new adjustArm(98, 30.5, true, false, true),
+
+        //backing into the charging dock 110 inches, so that the robot is at an angle so that balanceorobtcommand works
+
+        new AutoDrive(List.of((
+                new Pose2d(0, 0, new Rotation2d(0))),
+                (new Pose2d(0, -2.794, new Rotation2d(0)))),true),
+
+                new InstantCommand(()-> new BalanceRobotCommand().balanceSwerve())
+
+    );
+
+    private final Command m_autoThree= new SequentialCommandGroup(
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+            new adjustArm(98, 30.5, true, false, true),
+           //move right 17 inches
+            new AutoDrive(List.of((
+                new Pose2d(0, 0, new Rotation2d(0))),
+                (new Pose2d(0.4318, 0, new Rotation2d(0)))),true),
+
+        //back up till blue line 140 inches.
+        new AutoDrive(List.of((
+            new Pose2d(0, 0, new Rotation2d(0))),
+            (new Pose2d(0, -3.556, new Rotation2d(0)))),true)
+    );
+
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -94,6 +124,8 @@ public class RobotContainer {
         autoChooser = new SendableChooser<Command>();
         autoChooser.setDefaultOption("Auto One", m_autoOne);
         autoChooser.addOption("Auto Two", m_autoTwo);
+        autoChooser.addOption("Auto Three",m_autoThree);
+        autoChooser.addOption("Station 2", m_stationTwo);
         SmartDashboard.putData("Auto mode", autoChooser);   
     }
 
