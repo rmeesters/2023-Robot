@@ -55,21 +55,22 @@ public class RobotContainer {
     public static final Swerve s_Swerve = new Swerve();
     public static final ArmSubsystem s_ArmSubsystem = new ArmSubsystem(); // Add Arm Subsystem
     //private final Limelight s_limelight = new Limelight();
-    private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
+    // private final LimelightsubSystem s_limelightsub = new LimelightsubSystem();
     // private final Limelight s_Limelight = new Limelight();
 
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
-    private final Command m_autoOne = new SequentialCommandGroup(
+    private final Command m_autoLeft = new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, true, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
         new adjustArm(98, 30.5, true, false, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
+
+        // back up across the line 
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-3, 0, new Rotation2d(0)))),true)
     );
-    private final Command m_autoTwo = new BalanceRobotCommand(); 
-
-    private final Command m_stationTwo =  new SequentialCommandGroup(
+    
+    private final Command m_autoCenter =  new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
         new adjustArm(98, 30.5, true, false, true),
@@ -84,19 +85,20 @@ public class RobotContainer {
 
     );
 
-    private final Command m_autoThree= new SequentialCommandGroup(
+    private final Command m_autoRight= new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
             new adjustArm(98, 30.5, true, false, true),
-           //move right 17 inches
+           
+            //move right 17 inches
             new AutoDrive(List.of((
                 new Pose2d(0, 0, new Rotation2d(0))),
                 (new Pose2d(0.4318, 0, new Rotation2d(0)))),true),
 
-        //back up till blue line 140 inches.
-        new AutoDrive(List.of((
-            new Pose2d(0, 0, new Rotation2d(0))),
-            (new Pose2d(0, -3.556, new Rotation2d(0)))),true)
+            //back up till blue line 140 inches.
+            new AutoDrive(List.of((
+                new Pose2d(0, 0, new Rotation2d(0))),
+                (new Pose2d(0, -3.556, new Rotation2d(0)))),true)
     );
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -122,10 +124,9 @@ public class RobotContainer {
         
         // Autonomous Sendable Chooser
         autoChooser = new SendableChooser<Command>();
-        autoChooser.setDefaultOption("Auto One", m_autoOne);
-        autoChooser.addOption("Auto Two", m_autoTwo);
-        autoChooser.addOption("Auto Three",m_autoThree);
-        autoChooser.addOption("Station 2", m_stationTwo);
+        autoChooser.setDefaultOption("Driver Station Left: ", m_autoLeft);
+        autoChooser.addOption("Center: ",m_autoCenter);
+        autoChooser.addOption("Driver Station Right: ", m_autoRight);
         SmartDashboard.putData("Auto mode", autoChooser);   
     }
 
