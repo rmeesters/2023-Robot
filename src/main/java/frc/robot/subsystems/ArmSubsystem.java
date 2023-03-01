@@ -31,7 +31,7 @@ public class ArmSubsystem extends SubsystemBase {
     /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
-    Solenoid vacSolPH,fanPH;
+    Solenoid vacSolPH,clawSolPH,fanPH;
     SendableChooser<String> colorChooser = new SendableChooser<>();
     String selectedColor;
   
@@ -45,6 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
         // Pnumatics init
         armPH = new PneumaticHub(airSupplyCAN);
         vacSolPH = armPH.makeSolenoid(0);
+        clawSolPH = armPH.makeSolenoid(1);
         fanPH = armPH.makeSolenoid(3);
                 
         // Configure Arm Defaults
@@ -123,6 +124,12 @@ public class ArmSubsystem extends SubsystemBase {
     }
     public void toggleVac() {
         vacSolPH.toggle();
+    }
+    public void enableClaw(boolean on) {
+        clawSolPH.set(on);
+    }
+    public void toggleClaw() {
+        clawSolPH.toggle();
     }
     
     public void goPivotToPosition(double degrees) {
