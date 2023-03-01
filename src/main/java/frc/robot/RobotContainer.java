@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -61,9 +61,12 @@ public class RobotContainer {
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
     private final Command m_autoLeft = new SequentialCommandGroup(
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, true, true, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(98, 30.5, true, false, true),
+        new adjustArm(98, 30.5, true, true, true),
+        new adjustArm(93, 29.5, true, false, true),
+        new WaitCommand(0.5),
+        new adjustArm(98, 30.5, false, false, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
 
         // back up across the line 
@@ -73,32 +76,35 @@ public class RobotContainer {
     private final Command m_autoCenter =  new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(98, 30.5, true, false, true),
+        new adjustArm(98, 30.5, true, true, true),
+        new adjustArm(93, 29.5, true, false, true),
+        new WaitCommand(0.5),
+        new adjustArm(98, 30.5, false, false, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
 
         //backing into the charging dock 110 inches, so that the robot is at an angle so that balanceorobtcommand works
 
-        new AutoDrive(List.of((
-                new Pose2d(0, 0, new Rotation2d(0))),
-                (new Pose2d(0, -2.794, new Rotation2d(0)))),true),
+        /*new AutoDrive(List.of(
+            (new Pose2d(0, 0, new Rotation2d(0))),
+            (new Pose2d(0, -2.794, new Rotation2d(0)))),true), */
 
-                new InstantCommand(()-> new BalanceRobotCommand().balanceSwerve())
+        new InstantCommand(()-> new BalanceRobotCommand().balanceSwerve())
 
     );
 
     private final Command m_autoRight= new SequentialCommandGroup(
         new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(98, 30.5, true, false, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        new adjustArm(98, 30.5, true, true, true),
+        new adjustArm(93, 29.5, true, false, true),
+        new WaitCommand(0.5),
+        new adjustArm(98, 30.5, false, false, true),
+        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
            
-            //move right 17 inches
-            new AutoDrive(List.of((
-                new Pose2d(0, 0, new Rotation2d(0))),
-                (new Pose2d(0.4318, 0, new Rotation2d(0)))),true),
-
             //back up till blue line 140 inches.
-            new AutoDrive(List.of((
-                new Pose2d(0, 0, new Rotation2d(0))),
-                (new Pose2d(0, -3.556, new Rotation2d(0)))),true)
+            new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
+                (new Pose2d(-1,0.4318, new Rotation2d(0))),
+                (new Pose2d(-3.556, 0.4318, new Rotation2d(0)))),true)
     );
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -154,12 +160,18 @@ public class RobotContainer {
         medPos.onTrue(new SequentialCommandGroup(
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(85, 14.5, true, false, true)
+            new adjustArm(85, 13.75, true, true, true),
+            new adjustArm(80, 13.25, true, false, true),
+            new WaitCommand(0.5),
+            new adjustArm(85, 13.75, false, false, true)
         ));
         highPos.onTrue(new SequentialCommandGroup(
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
             new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(98, 30.5, true, false, true)
+            new adjustArm(98, 30.5, true, true, true),
+            new adjustArm(93, 29.5, true, false, true),
+            new WaitCommand(0.5),
+            new adjustArm(98, 30.5, false, false, true)
             ));
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
        balanceRobot.onTrue(new BalanceRobotCommand());
