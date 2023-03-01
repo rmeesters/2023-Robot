@@ -91,11 +91,6 @@ public class ArmSubsystem extends SubsystemBase {
         armPH.enableCompressorAnalog(110, 120);
         fanPH.set(true);    
 
-        //adding color options
-        colorChooser.setDefaultOption("Red", "red");
-        colorChooser.addOption("Green", "green");
-        colorChooser.addOption("Yellow", "yellow");
-
     }
     
     @Override
@@ -109,9 +104,7 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Compressor Regulated Voltage", armPH.get5VRegulatedVoltage());
         SmartDashboard.putNumber("Pivot enc", getPivotAngle());
         SmartDashboard.putNumber("Rack enc", armRack.getSelectedSensorPosition());
-        selectedColor= colorChooser.getSelected();
-        SmartDashboard.putData("Color Chooser",colorChooser);
-        if(armPH.getPressure(0) >75.0){
+        if(armPH.getPressure(0) > 75.0){
             SmartDashboard.putBoolean("Compressor Pressure", false);
         }
         else{
