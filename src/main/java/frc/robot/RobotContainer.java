@@ -46,7 +46,7 @@ public class RobotContainer {
     private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
     private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
-    private final JoystickButton balanceRobot = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
+    private final JoystickButton balanceRobot = new JoystickButton(driver, PS4Controller.Button.kPS.value);
 
     // private final JoystickButton limeLightModeBlink = new JoystickButton(driver, PS4Controller.Button.kSquare.value);
     // private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
@@ -61,26 +61,20 @@ public class RobotContainer {
     /* Sendable Chooser and Autonomus Commands - need to work on this */
     private static SendableChooser<Command> autoChooser;
     private final Command m_autoLeft = new SequentialCommandGroup(
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(98, 30.5, true, true, true),
-        new adjustArm(93, 29.5, true, false, true),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
         new WaitCommand(0.5),
-        new adjustArm(98, 30.5, false, false, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome),
 
         // back up across the line 
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-3, 0, new Rotation2d(0)))),true)
     );
     
     private final Command m_autoCenter =  new SequentialCommandGroup(
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(98, 30.5, true, true, true),
-        new adjustArm(93, 29.5, true, false, true),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
         new WaitCommand(0.5),
-        new adjustArm(98, 30.5, false, false, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome),
 
         //backing into the charging dock 110 inches, so that the robot is at an angle so that balanceorobtcommand works
 
@@ -93,13 +87,10 @@ public class RobotContainer {
     );
 
     private final Command m_autoRight= new SequentialCommandGroup(
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(98, 30.5, true, true, true),
-        new adjustArm(93, 29.5, true, false, true),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
         new WaitCommand(0.5),
-        new adjustArm(98, 30.5, false, false, true),
-        new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, false, false, false),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome),
            
             //back up till blue line 140 inches.
             new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
@@ -152,38 +143,61 @@ public class RobotContainer {
         armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,false,false,false));
         
         lowPos.onTrue(new SequentialCommandGroup(
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        new adjustArm(47.5,17,true,false,true)
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        // new adjustArm(47.5,17,true,false,true)
+
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+        new AdjustArm2(47.5, 17,ArmMoveType.extendToPlace),
+        new WaitCommand(0.5),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome)
         ));
         // medPos.onTrue(new adjustArm(85, 15.5, false, false, true)); - try this Sequential Command:
         medPos.onTrue(new SequentialCommandGroup(
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(85, 13.75, true, true, true),
-            new adjustArm(80, 13.25, true, false, true),
+            // new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+            // new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+            // new adjustArm(85, 13.75, true, true, true),
+            // new adjustArm(80, 13.25, true, false, true),
+            // new WaitCommand(0.5),
+            // new adjustArm(85, 13.75, false, false, true)
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+            new AdjustArm2(85, 13.75,ArmMoveType.extendToPlace),
             new WaitCommand(0.5),
-            new adjustArm(85, 13.75, false, false, true)
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome)
+
+
+
         ));
-        highPos.onTrue(new SequentialCommandGroup(
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            new adjustArm(98, 30.5, true, true, true),
-            new adjustArm(93, 29.5, true, false, true),
+        // highPos.onTrue(new SequentialCommandGroup(
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        //     new adjustArm(98, 30.5, true, true, true),
+        //     new adjustArm(93, 29.5, true, false, true),
+        //     new WaitCommand(0.5),
+        //     new adjustArm(98, 30.5, false, false, true)
+        //     ));
+
+        highPos.onTrue(new SequentialCommandGroup (
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.0,ArmMoveType.setPosition),
+            new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
             new WaitCommand(0.5),
-            new adjustArm(98, 30.5, false, false, true)
-            ));
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome)
+            )); 
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
-       balanceRobot.onTrue(new AutoSwerve(s_Swerve, 0.3, 0, 0, false));  // Try to see if the button calls this. 
-       groundPickUp.onTrue(new adjustArm(47.5,17,true,true,true));
-       groundPickUp.onFalse(new SequentialCommandGroup(
-            new adjustArm(60, 17, true, false, true),
-            new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false)
+       balanceRobot.onTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
+       groundPickUp.onTrue(
+        new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp));
+       groundPickUp.onFalse(new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.0,ArmMoveType.placeOnRobot));
 
-        ));
+        humanPickUp.onTrue(
+        new AdjustArm2(78, 0.0,ArmMoveType.pickUp)
+       );
 
-        humanPickUp.onTrue(new adjustArm(85,2,true,true,true));
-        humanPickUp.onFalse( new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false)
+
+        humanPickUp.onFalse( 
+            
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.0,ArmMoveType.placeOnRobot)
+        
         );
 
         

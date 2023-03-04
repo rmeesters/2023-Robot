@@ -7,11 +7,15 @@ import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Constants;
+import frc.robot.subsystems.Swerve;
 
 
 public class BalanceRobotCommand extends CommandBase {
   /** Creates a new BalanceRobotCommand. */
     private Swerve s_Swerve;
+    private double translationVal;
     final private double TOLERANCE_VALUE = 2.0;
     boolean robotBalanced; //the tolerance val is 2 degrees
   public BalanceRobotCommand() {
@@ -24,16 +28,32 @@ public class BalanceRobotCommand extends CommandBase {
 
         if(s_Swerve.gyro.getPitch()> TOLERANCE_VALUE){
           robotBalanced=false;
-          new AutoSwerve(s_Swerve, 0.2, 0.0, 0.0, false);
+          
+          s_Swerve.drive(
+            new Translation2d(0.1, 0).times(Constants.Swerve.maxSpeed), 
+            0 * Constants.Swerve.maxAngularVelocity, 
+            false, 
+            true
+        );
           //  GO FORWARDS
         }
         else if(s_Swerve.gyro.getPitch()< -(TOLERANCE_VALUE)){
           robotBalanced=false;
-          new AutoSwerve(s_Swerve, -0.2, 0.0, 0.0, false);
+          s_Swerve.drive(
+            new Translation2d(-0.1, 0).times(Constants.Swerve.maxSpeed), 
+            0 * Constants.Swerve.maxAngularVelocity, 
+            false, 
+            true
+        );
         }
         else {
           robotBalanced=true;
-          new AutoSwerve(s_Swerve, 0.0, 0.0, 0.0, false);
+          s_Swerve.drive(
+            new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
+            0 * Constants.Swerve.maxAngularVelocity, 
+            false, 
+            true
+        );
           // isFinished();
         }
    
@@ -47,6 +67,8 @@ public class BalanceRobotCommand extends CommandBase {
   @Override
   public void execute() {
     balanceSwerve();
+    
+
   }
 
   // Called once the command ends or is interrupted.

@@ -1,4 +1,4 @@
 package frc.robot.commands;
 public enum ArmMoveType {
-	GrabPiece,GrabPiecePivotFirst,DropPiece,DropPiecePivotFirst,PutInClaw,TakeFromClaw;
+	setPosition,extendToPlace,returnHome,pickUp,placeOnRobot,PutInClaw,TakeFromClaw;
 }
