@@ -75,15 +75,10 @@ public class RobotContainer {
         new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.0,ArmMoveType.returnHome),
-
-        //backing into the charging dock 110 inches, so that the robot is at an angle so that balanceorobtcommand works
-
-        /*new AutoDrive(List.of(
-            (new Pose2d(0, 0, new Rotation2d(0))),
-            (new Pose2d(0, -2.794, new Rotation2d(0)))),true), */
-
-        new InstantCommand(()-> new BalanceRobotCommand().balanceSwerve())
-
+        
+        // back up and balance
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-2, 0, new Rotation2d(0)))),true),
+        new BalanceRobotCommand()
     );
 
     private final Command m_autoRight= new SequentialCommandGroup(
