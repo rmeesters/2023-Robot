@@ -18,7 +18,8 @@ public class AdjustArm2 extends SequentialCommandGroup {
 		switch (moveType) {
 		case setPosition:
 		
-			addCommands(new movePivot(pivotAngle),new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableClaw(false)),new moveRack(rackPosition),new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableVac(true)));
+			addCommands(new movePivot(pivotAngle),new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableClaw(false)),new moveRack(rackPosition),
+			new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableVac(true)));
 			break;
 
 		case extendToPlace:
