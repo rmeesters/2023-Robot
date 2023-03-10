@@ -16,7 +16,7 @@ public class BalanceRobotCommand extends CommandBase {
   /** Creates a new BalanceRobotCommand. */
     private Swerve s_Swerve;
     private double translationVal;
-    final private double TOLERANCE_VALUE = 2.0;
+    final private double TOLERANCE_VALUE = 4.0;
     boolean robotBalanced; //the tolerance val is 2 degrees
   public BalanceRobotCommand() {
     s_Swerve  =  RobotContainer.s_Swerve;

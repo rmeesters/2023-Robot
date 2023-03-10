@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 
 public class ArmSubsystem extends SubsystemBase {
     private static final double PIVOTCONST = 975.64444444;
-    private static final double RACKCONST = -15979.6178;
+    private static final double RACKCONST = -6848.4076; // was -15979.6178;
 
     /* Arm Setup */
     private WPI_TalonFX armPivot;
