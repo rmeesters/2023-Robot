@@ -63,16 +63,18 @@ public class RobotContainer {
     private final Command m_autoLeft = new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
         new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
 
         // back up across the line 
-        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-3, 0, new Rotation2d(0)))),true)
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-4, 0, new Rotation2d(0)))),true)
     );
     
     private final Command m_autoCenter =  new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
         new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
         
@@ -85,16 +87,19 @@ public class RobotContainer {
     private final Command m_autoRight= new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
         new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-4, 0, new Rotation2d(0)))),true)
+        
 
             //back up  blue line 140 inches.
-        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
-        //if works try -4
-        //practice math: -3    
-        (new Pose2d(-1, 0, Rotation2d.fromDegrees(33.0))),
-        (new Pose2d(-1.5, 0, Rotation2d.fromDegrees(200)))),
-        true)
+        // new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
+        // //if works try -4
+        // //practice math: -3    
+        // (new Pose2d(-1, 0, Rotation2d.fromDegrees(33.0))),
+        // (new Pose2d(-1.5, 0, Rotation2d.fromDegrees(200)))),
+        // true)
         //new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp),
         //new AutoDrive(List.of((new Pose2d(-2.5, 0, new Rotation2d(Math.PI))),
         //    (new Pose2d(-3, -0.153, new Rotation2d(Math.PI)))),true),
@@ -103,6 +108,14 @@ public class RobotContainer {
         //new AutoDrive((new Pose2d(-3, -0.152, new Rotation2d(Math.PI)))),true))
         
     );
+    private final Command m_testauto =  new SequentialCommandGroup(
+       // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
+        //new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        //new WaitCommand(0.5),
+        //new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-1, 0, Rotation2d.fromDegrees(115)))),true)
+        //90 deg
+        );
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -130,6 +143,8 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Driver Station Left: ", m_autoLeft);
         autoChooser.addOption("Center: ",m_autoCenter);
         autoChooser.addOption("Driver Station Right: ", m_autoRight);
+        autoChooser.addOption("test: ", m_testauto);
+
         SmartDashboard.putData("Auto mode", autoChooser);   
     }
 
@@ -154,41 +169,65 @@ public class RobotContainer {
         // new adjustArm(47.5,17,true,false,true)
 
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(47.5, 17,ArmMoveType.extendToPlace),
+        // new AdjustArm2(47.5, 17,ArmMoveType.extendToPlace),
+        new AdjustArm2(47, 17,ArmMoveType.extendToPlace)
+        // new WaitCommand(0.5),
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+        ));
+
+        lowPos.onFalse(new SequentialCommandGroup(
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
+        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
+        // new adjustArm(47.5,17,true,false,true)
+
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
+        // // new AdjustArm2(47.5, 17,ArmMoveType.extendToPlace),
+        // new AdjustArm2(43.5, 17,ArmMoveType.extendToPlace),
+
+        new AdjustArm2(47, 17,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+        // new WaitCommand(0.5),
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
         ));
         // medPos.onTrue(new adjustArm(85, 15.5, false, false, true)); - try this Sequential Command:
         medPos.onTrue(new SequentialCommandGroup(
-            // new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-            // new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-            // new adjustArm(85, 13.75, true, true, true),
-            // new adjustArm(80, 13.25, true, false, true),
-            // new WaitCommand(0.5),
-            // new adjustArm(85, 13.75, false, false, true)
+
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-            new AdjustArm2(85, 13.75,ArmMoveType.extendToPlace),
-            new WaitCommand(0.5),
-            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+            // new AdjustArm2(85, 13.75,ArmMoveType.extendToPlace),
+               new AdjustArm2(84.5, 13.75,ArmMoveType.extendToPlace)
+            // new WaitCommand(0.5),
+            // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
 
 
 
         ));
-        // highPos.onTrue(new SequentialCommandGroup(
-        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 1.0, false, true, true),
-        //     new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2.0, 0, true, true, true),
-        //     new adjustArm(98, 30.5, true, true, true),
-        //     new adjustArm(93, 29.5, true, false, true),
-        //     new WaitCommand(0.5),
-        //     new adjustArm(98, 30.5, false, false, true)
-        //     ));
+        medPos.onFalse(new SequentialCommandGroup(
+
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
+        // // new AdjustArm2(85, 13.75,ArmMoveType.extendToPlace),
+        //    new AdjustArm2(84.5, 13.75,ArmMoveType.extendToPlace),
+        // new WaitCommand(0.5),
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+        new AdjustArm2(81, 11.75,ArmMoveType.dropPiece),
+        new WaitCommand(0.5),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+
+
+    ));
+
 
         highPos.onTrue(new SequentialCommandGroup (
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-            new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
-            new WaitCommand(0.5),
-            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+            new AdjustArm2(97.5, 30.5,ArmMoveType.extendToPlace)
             )); 
+
+        highPos.onFalse(new SequentialCommandGroup (
+                
+                new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
+                new WaitCommand(0.5),
+                new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
+                ));    
         //lowPos.whileFalse(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0,true,false,false));
        balanceRobot.onTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
        groundPickUp.onTrue(
@@ -196,26 +235,24 @@ public class RobotContainer {
        groundPickUp.onFalse(new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot));
 
         humanPickUp.onTrue(
-        new AdjustArm2(85, 0.25,ArmMoveType.pickUp)
+        new AdjustArm2(84, 0.25,ArmMoveType.pickUp)
        );
 
 
         humanPickUp.onFalse(new SequentialCommandGroup(
             //new AdjustArm2(78, 0.25,ArmMoveType.placeOnRobot),
             new InstantCommand(()-> s_ArmSubsystem.toggleClaw()), 
-            new WaitCommand(2),
+            new WaitCommand(1),
             
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot)
-        )
-            
-    
-        
-        );
+        ));
+
+
 
         
-        manualIncreaseArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0.5)));
+        manualIncreaseArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0.15)));
         manualIncreaseArm.onFalse(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0)));
-        manualDecreasrArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(-0.5)));
+        manualDecreasrArm.whileTrue(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(-0.15)));
         manualDecreasrArm.onFalse(new InstantCommand(()-> s_ArmSubsystem.manualLiftArm(0)));
 
         
