@@ -4,7 +4,10 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.*;
@@ -15,6 +18,7 @@ public class ArmSubsystem extends SubsystemBase {
     private static final double RACKCONST = -6848.4076; // was -15979.6178;
 
     /* Arm Setup */
+    // CANCoder pivotEncoder;
     private WPI_TalonFX armPivot;
     private WPI_TalonFX armRack;
     int loopIDX = Constants.ArmConstants.loopIDX;
@@ -41,7 +45,8 @@ public class ArmSubsystem extends SubsystemBase {
     public ArmSubsystem() {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
-        
+        //pivotEncoder = new CANCoder(Constants.ArmConstants.pivotEncoder); // 5 in Constants
+
         // Pnumatics init
         armPH = new PneumaticHub(airSupplyCAN);
         vacSolPH = armPH.makeSolenoid(0);
@@ -49,14 +54,25 @@ public class ArmSubsystem extends SubsystemBase {
         fanPH = armPH.makeSolenoid(3);
                 
         // Configure Arm Defaults
+        /* pivotEncoder.configFactoryDefault();
+        pivotEncoder.clearStickyFaults();
+        pivotEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        pivotEncoder.setPosition(Constants.ArmConstants.pivotBottomAngle);
+        pivotEncoder.configSensorDirection(false);
+        pivotEncoder.configMagnetOffset(0); */
+
         armPivot.configFactoryDefault();
         armPivot.setSelectedSensorPosition(0);
         armPivot.setNeutralMode(NeutralMode.Brake);
         armRack.configFactoryDefault();
         armRack.setSelectedSensorPosition(0);
-        armRack.setNeutralMode(NeutralMode.Brake);
+        armRack.setNeutralMode(NeutralMode.Brake); 
+
+        
 
         // Config feedback sensors for PID
+        //armPivot.configRemoteFeedbackFilter(pivotEncoder.getDeviceID(), RemoteSensorSource.CANCoder, 0);
+        //armPivot.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, loopIDX, timeoutMS);
         armPivot.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, loopIDX, timeoutMS);
         armRack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, loopIDX, timeoutMS);
 

@@ -62,18 +62,24 @@ public class RobotContainer {
     private static SendableChooser<Command> autoChooser;
     private final Command m_autoLeft = new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
 
         // back up across the line 
-        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-4, 0, new Rotation2d(0)))),true)
+        new AutoDrive(List.of(
+            (new Pose2d(0, 0, new Rotation2d(0))),
+            (new Pose2d(-2, 0, new Rotation2d(0))),
+            (new Pose2d(-4, 0, Rotation2d.fromDegrees(180+23)))
+            
+            ),true)
+            
     );
     
     private final Command m_autoCenter =  new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
@@ -86,7 +92,7 @@ public class RobotContainer {
 
     private final Command m_autoRight= new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 30.5,ArmMoveType.extendToPlace),
+        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
@@ -140,9 +146,9 @@ public class RobotContainer {
         
         // Autonomous Sendable Chooser
         autoChooser = new SendableChooser<Command>();
-        autoChooser.setDefaultOption("Driver Station Left: ", m_autoLeft);
+        autoChooser.setDefaultOption("Inside (Human Player): ", m_autoLeft);
         autoChooser.addOption("Center: ",m_autoCenter);
-        autoChooser.addOption("Driver Station Right: ", m_autoRight);
+        autoChooser.addOption("Outside (Wall): ", m_autoRight);
         autoChooser.addOption("test: ", m_testauto);
 
         SmartDashboard.putData("Auto mode", autoChooser);   
@@ -219,9 +225,10 @@ public class RobotContainer {
 
         highPos.onTrue(new SequentialCommandGroup (
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-            new AdjustArm2(97.5, 30.5,ArmMoveType.extendToPlace)
+            new AdjustArm2(97.5, 29.75,ArmMoveType.extendToPlace)
             )); 
-
+//old 30.5
+//old 2: 30
         highPos.onFalse(new SequentialCommandGroup (
                 
                 new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
@@ -235,7 +242,8 @@ public class RobotContainer {
        groundPickUp.onFalse(new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot));
 
         humanPickUp.onTrue(
-        new AdjustArm2(84, 0.25,ArmMoveType.pickUp)
+        new AdjustArm2(85, 0.25,ArmMoveType.pickUp)
+        //old 84
        );
 
 

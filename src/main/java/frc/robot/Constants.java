@@ -172,6 +172,7 @@ public final class Constants {
     public static final int armPivot = 15; //adjust for CAN ID
     public static final int armRack = 16;  //adjust for CAN ID
     public static final int airSupplyCAN = 17;
+    public static final int pivotEncoder = 5;
 
     public static final int loopIDX = 0;
     public static final int timeoutMS = 0;
