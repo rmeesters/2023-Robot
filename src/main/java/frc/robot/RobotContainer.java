@@ -108,7 +108,7 @@ public class RobotContainer {
         // true)
         //new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp),
         //new AutoDrive(List.of((new Pose2d(-2.5, 0, new Rotation2d(Math.PI))),
-        //    (new Pose2d(-3, -0.153, new Rotation2d(Math.PI)))),true),
+        //    (new Pose2d(-3, -0.153, new Rotation2d(Math.PI)))),true), -- swerve to driver's right 
         //new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot)
         
         //new AutoDrive((new Pose2d(-3, -0.152, new Rotation2d(Math.PI)))),true))
