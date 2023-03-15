@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
 public class ArmSubsystem extends SubsystemBase {
-    private static final double PIVOTCONST = 11.37777777; // was 975.64444444 - need to change for new gearing
+    private static final double PIVOTCONST = 11.37777777; // was 975.64444444 - need to change for new gearing - should be 896 for 45:1 gearbox
     private static final double RACKCONST = -6848.4076; // was -15979.6178; 
 
     /* Arm Setup */
