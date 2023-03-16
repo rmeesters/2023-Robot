@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.*;
 
 
 public class ArmSubsystem extends SubsystemBase {
-    private static final double PIVOTCONST = 11.37777777; // was 975.64444444 - need to change for new gearing - should be 896 for 45:1 gearbox
+    private static final double PIVOTCONST = 896; // was 975.64444444 - need to change for new gearing - should be 896 for 45:1 gearbox 11.37777777 for Cancoder
     private static final double RACKCONST = -6848.4076; // was -15979.6178; 
 
     /* Arm Setup */
@@ -31,6 +31,7 @@ public class ArmSubsystem extends SubsystemBase {
     double rackKI = Constants.ArmConstants.armRackKI;
     double rackKD = Constants.ArmConstants.armRackKI;
     double rackKF = Constants.ArmConstants.armRackKF;
+    double offsetToZero;
 
     /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
@@ -54,16 +55,17 @@ public class ArmSubsystem extends SubsystemBase {
         fanPH = armPH.makeSolenoid(3);
                 
         // Configure Arm Defaults
+        offsetToZero = (pivotEncoder.getPosition()*PIVOTCONST);
         pivotEncoder.configFactoryDefault();
         pivotEncoder.clearStickyFaults();
         pivotEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         //pivotEncoder.setPosition(Constants.ArmConstants.pivotBottomAngle);
         pivotEncoder.configSensorDirection(false);
-        pivotEncoder.configMagnetOffset(30.234375); 
+        pivotEncoder.configMagnetOffset(27.2); 
         pivotEncoder.setPositionToAbsolute();
 
         armPivot.configFactoryDefault();
-        armPivot.setSelectedSensorPosition(0);
+        armPivot.setSelectedSensorPosition(-offsetToZero);
         armPivot.setNeutralMode(NeutralMode.Brake);
         armRack.configFactoryDefault();
         armRack.setSelectedSensorPosition(0);
@@ -72,20 +74,20 @@ public class ArmSubsystem extends SubsystemBase {
         
 
         // Config feedback sensors for PID
-        armPivot.configRemoteFeedbackFilter(pivotEncoder.getDeviceID(), RemoteSensorSource.CANCoder, 0);
-        armPivot.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, loopIDX, timeoutMS);
-        //armPivot.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, loopIDX, timeoutMS);
+        //armPivot.configRemoteFeedbackFilter(pivotEncoder.getDeviceID(), RemoteSensorSource.CANCoder, 0);
+        //armPivot.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, loopIDX, timeoutMS);
+        armPivot.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, loopIDX, timeoutMS);
         armRack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, loopIDX, timeoutMS);
 
         // Config peak and nominal outputs
         armPivot.configNominalOutputForward(0, timeoutMS);
         armPivot.configNominalOutputReverse(0, timeoutMS);
-        armPivot.configPeakOutputForward(0.5, timeoutMS);
-        armPivot.configPeakOutputReverse(-0.5, timeoutMS);
+        armPivot.configPeakOutputForward(0.5, timeoutMS); // was 0.5
+        armPivot.configPeakOutputReverse(-0.5, timeoutMS); // was -0.5
         armPivot.setInverted(true);
         armPivot.setSensorPhase(true);
-        armPivot.configMotionAcceleration(PIVOTCONST*20);
-        armPivot.configMotionCruiseVelocity(PIVOTCONST*10);
+        armPivot.configMotionAcceleration(PIVOTCONST*29);  // was 20
+        armPivot.configMotionCruiseVelocity(PIVOTCONST*30); // was 10
 
         armRack.configNominalOutputForward(0, timeoutMS);
         armRack.configNominalOutputReverse(0, timeoutMS);
@@ -122,6 +124,7 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Pivot enc", armPivot.getSelectedSensorPosition());
         SmartDashboard.putNumber("Rack enc", armRack.getSelectedSensorPosition());
         SmartDashboard.putNumber("CanCoder", pivotEncoder.getPosition());
+        SmartDashboard.putNumber("Pivot Offset", offsetToZero);
         if(armPH.getPressure(0) > 75.0){
             SmartDashboard.putBoolean("Compressor Pressure", false);
         }

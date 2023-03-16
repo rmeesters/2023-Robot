@@ -108,7 +108,7 @@ public class RobotContainer {
                 () -> -driver.getRawAxis(strafeAxis), 
                 () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean()
-            )
+            ) 
         );
 
         // Configure the button bindings
