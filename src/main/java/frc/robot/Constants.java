@@ -182,7 +182,7 @@ public final class Constants {
     public static final double armPivotKD = 0.0;  
     public static final double armPivotKF = 0.0;
 
-    public static final double armRackKP = 0.4; //TODO: This must be tuned to specific robot
+    public static final double armRackKP = 0.3; //TODO old: 0.4: This must be tuned to specific robot
     public static final double armRackKI = 0.0;
     public static final double armRackKD = 0.0;  
     public static final double armRackKF = 0.0;

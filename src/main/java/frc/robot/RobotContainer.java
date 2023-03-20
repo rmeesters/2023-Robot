@@ -66,10 +66,12 @@ public class RobotContainer {
         new AutoDrive(List.of(
             (new Pose2d(0, 0, new Rotation2d(0))),
             (new Pose2d(-2, 0, new Rotation2d(0))),
-            (new Pose2d(-4, 0, Rotation2d.fromDegrees(180+23)))
+            (new Pose2d(-4, 0, Rotation2d.fromDegrees(-180-23)))
             ),true)
+
+            //old: 180+23
     );
-    
+
     private final Command m_autoCenter =  new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
         new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
@@ -79,7 +81,7 @@ public class RobotContainer {
         
         // back up and balance
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
-            (new Pose2d(-3.0, 0, new Rotation2d(0)))),true),
+            (new Pose2d(-2.75, 0, new Rotation2d(0)))),true),
         new BalanceRobotCommand()
     );
 
@@ -89,10 +91,24 @@ public class RobotContainer {
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
         new WaitCommand(0.5),
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
-        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-4, 0, new Rotation2d(0)))),true)
+        new AutoDrive(List.of(
+            (new Pose2d(0, 0, new Rotation2d(0))),
+            (new Pose2d(-2, 0.3, new Rotation2d(0))),
+            (new Pose2d(-4, 0.3, Rotation2d.fromDegrees(180+23))),
+            (new Pose2d(-4.7,0.3, Rotation2d.fromDegrees(180+23)))
+            //old -4.3
+            ),true),
+
+        //changes
+        new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp),
+        new WaitCommand(0.5),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot)
+    );
+
+        
         
         // Negative y value will move Right relative to driver - e.g. (new Pose2d(-3, -0.153, new Rotation2d(Math.PI)))),true) should move .153m to the right
-    );
+    
 
     private final Command m_testauto =  new SequentialCommandGroup(
        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-1, 0, Rotation2d.fromDegrees(115)))),true)
@@ -101,6 +117,7 @@ public class RobotContainer {
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
+        
         s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
@@ -156,27 +173,34 @@ public class RobotContainer {
         
         medPos.onTrue(new SequentialCommandGroup(
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-            new AdjustArm2(84.5, 13.75,ArmMoveType.extendToPlace)
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+            new AdjustArmParallel(85.5, 13.75,ArmMoveType.extendToPlace)
+            
+            //old: 84.5
+
         ));
         
         medPos.onFalse(new SequentialCommandGroup(
-            new AdjustArm2(81, 11.75,ArmMoveType.dropPiece),
+            new AdjustArm2(79, 11.75,ArmMoveType.dropPiece),
+            //old 81 angle
             new WaitCommand(0.5),
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
         ));
 
         highPos.onTrue(new SequentialCommandGroup (
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-            new AdjustArm2(97.5, 29.75,ArmMoveType.extendToPlace)
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+            new AdjustArmParallel(97.5, 29.75,ArmMoveType.extendToPlace)
         )); 
 
         highPos.onFalse(new SequentialCommandGroup (
-            new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
+            new AdjustArm2(92, 28.5,ArmMoveType.dropPiece),
+            //old 94 angle
             new WaitCommand(0.5),
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
         ));    
 
-       balanceRobot.onTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
+       balanceRobot.whileTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
        
        groundPickUp.onTrue(
            new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp));

@@ -13,41 +13,42 @@ import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.*;
 
 
-public class BalanceRobotCommand extends CommandBase {
+public class BalanceRobotCommand2 extends CommandBase {
   /** Creates a new BalanceRobotCommand. */
     private Swerve s_Swerve;
-    private double p;
-    private double KP = 0.0125;
+    private double P;
+    private double KP = 0.1;
+   
     private double translationVal;
     final private double TOLERANCE_VALUE = 4.0;
     boolean robotBalanced; //the tolerance val is 2 degrees
-  public BalanceRobotCommand() {
+  public BalanceRobotCommand2() {
     s_Swerve  =  RobotContainer.s_Swerve;
     addRequirements(s_Swerve);
   }
 
   public void balanceSwerve(){
-    p = Math.abs(s_Swerve.gyro.getPitch()*KP);
-    
+    P = s_Swerve.gyro.getPitch()*KP;
     SmartDashboard.putBoolean("Is robot balanced", robotBalanced);
     SmartDashboard.putNumber("Roll Val", s_Swerve.gyro.getPitch());
+    
+    
 
         if(s_Swerve.gyro.getPitch()> TOLERANCE_VALUE){
           robotBalanced=false;
           
           s_Swerve.drive(
-            new Translation2d(p, 0).times(Constants.Swerve.maxSpeed), //0.125
+            new Translation2d(0.125, 0).times(Constants.Swerve.maxSpeed), 
             0 * Constants.Swerve.maxAngularVelocity, 
             false, 
             true
-            //old +0.125
         );
           //  GO FORWARDS
         }
         else if(s_Swerve.gyro.getPitch()< -(TOLERANCE_VALUE)){
           robotBalanced=false;
           s_Swerve.drive(
-            new Translation2d(-p, 0).times(Constants.Swerve.maxSpeed), 
+            new Translation2d(-0.125, 0).times(Constants.Swerve.maxSpeed), 
             0 * Constants.Swerve.maxAngularVelocity, 
             false, 
             true

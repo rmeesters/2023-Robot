@@ -36,7 +36,7 @@ public class ArmSubsystem extends SubsystemBase {
     /* Pneuumatics Setup */
     public int airSupplyCAN = Constants.ArmConstants.airSupplyCAN;
     private PneumaticHub armPH;
-    Solenoid vacSolPH,clawSolPH,fanPH;
+    Solenoid vacSolPH,clawSolPH,fanPH,LED;
     SendableChooser<String> colorChooser = new SendableChooser<>();
     String selectedColor;
   
@@ -47,6 +47,11 @@ public class ArmSubsystem extends SubsystemBase {
         armPivot = new WPI_TalonFX(Constants.ArmConstants.armPivot);
         armRack = new WPI_TalonFX(Constants.ArmConstants.armRack);
         pivotEncoder = new CANCoder(Constants.ArmConstants.pivotEncoder); // 5 in Constants
+        
+
+        //LED
+        
+
 
         // Pnumatics init
         armPH = new PneumaticHub(airSupplyCAN);
@@ -54,6 +59,7 @@ public class ArmSubsystem extends SubsystemBase {
         clawSolPH = armPH.makeSolenoid(1);
         fanPH = armPH.makeSolenoid(3);
                 
+        LED = armPH.makeSolenoid(8);
         // Configure Arm Defaults
         offsetToZero = (pivotEncoder.getPosition()*PIVOTCONST);
         pivotEncoder.configFactoryDefault();
@@ -82,12 +88,12 @@ public class ArmSubsystem extends SubsystemBase {
         // Config peak and nominal outputs
         armPivot.configNominalOutputForward(0, timeoutMS);
         armPivot.configNominalOutputReverse(0, timeoutMS);
-        armPivot.configPeakOutputForward(0.5, timeoutMS); // was 0.5
-        armPivot.configPeakOutputReverse(-0.5, timeoutMS); // was -0.5
+        armPivot.configPeakOutputForward(1, timeoutMS); // was 0.5
+        armPivot.configPeakOutputReverse(-1, timeoutMS); // was -0.5
         armPivot.setInverted(true);
         armPivot.setSensorPhase(true);
-        armPivot.configMotionAcceleration(PIVOTCONST*29);  // was 20
-        armPivot.configMotionCruiseVelocity(PIVOTCONST*30); // was 10
+        armPivot.configMotionAcceleration(PIVOTCONST*25);  // was 20 //29
+        armPivot.configMotionCruiseVelocity(PIVOTCONST*60); // was 10 //30
 
         armRack.configNominalOutputForward(0, timeoutMS);
         armRack.configNominalOutputReverse(0, timeoutMS);
@@ -95,6 +101,8 @@ public class ArmSubsystem extends SubsystemBase {
         armRack.configPeakOutputReverse(-1, timeoutMS);
         armRack.setInverted(true);
         armRack.setSensorPhase(true);
+        armRack.configMotionAcceleration(RACKCONST * 99999999);  // was 20 //29
+        armRack.configMotionCruiseVelocity(RACKCONST*12); 
 
         // Config P, I, D, F values
         armPivot.config_kP(loopIDX, pivotKP, timeoutMS);
@@ -109,11 +117,12 @@ public class ArmSubsystem extends SubsystemBase {
         // Enable Compressor and fan
         armPH.enableCompressorAnalog(110, 120);
         fanPH.set(true);    
-
+        LED.set(true);
     }
     
     @Override
     public void periodic() {
+        
         // This method will be called once per scheduler run
 
         //TODO clean unused smartdashboard puts
@@ -141,17 +150,28 @@ public class ArmSubsystem extends SubsystemBase {
     }
     public void enableClaw(boolean on) {
         clawSolPH.set(on);
+        LED.set(on);
     }
     public void toggleClaw() {
         clawSolPH.toggle();
+        LED.toggle();
     }
     
+    public void toggleLed(){
+
+        LED.toggle();
+    }
+    public void setLed(boolean val){
+
+        LED.set(val);
+    }
+
     public void goPivotToPosition(double degrees) {
         armPivot.set(ControlMode.MotionMagic, (degrees-Constants.ArmConstants.pivotBottomAngle)*PIVOTCONST);
     }
 
     public void goRackToPosition(double inches) {
-        armRack.set(ControlMode.Position, inches*RACKCONST);
+        armRack.set(ControlMode.MotionMagic, inches*RACKCONST); //position
     }
 
     public void manualLiftArm(double number){
