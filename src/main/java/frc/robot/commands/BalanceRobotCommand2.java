@@ -17,7 +17,7 @@ public class BalanceRobotCommand2 extends CommandBase {
   /** Creates a new BalanceRobotCommand. */
     private Swerve s_Swerve;
     private double P;
-    private double KP = 0.1;
+    private double KP = 0.08;
    
     private double translationVal;
     final private double TOLERANCE_VALUE = 4.0;

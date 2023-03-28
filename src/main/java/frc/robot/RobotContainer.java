@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.*;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,11 +39,12 @@ public class RobotContainer {
     private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kCircle.value);  
     private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kShare.value);
+    private final JoystickButton findTarget = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
     private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
     private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
     private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
     private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
-    private final JoystickButton balanceRobot = new JoystickButton(driver, PS4Controller.Button.kPS.value);
+    private final JoystickButton limelightTest = new JoystickButton(driver, PS4Controller.Button.kPS.value);
     // private final JoystickButton zeroGyro = new JoystickButton(driver, PS4Controller.Button.kTriangle.value);
  
     /* Subsystems */
@@ -83,6 +82,33 @@ public class RobotContainer {
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
             (new Pose2d(-2.75, 0, new Rotation2d(0)))),true),
         new BalanceRobotCommand()
+    );
+
+    private final Command m_autoCenterTest = new SequentialCommandGroup(
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
+        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
+        new WaitCommand(0.5),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+
+        new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
+            (new Pose2d(-3.6, 0, new Rotation2d(0)))
+            //(new Pose2d(-3.5,0, new Rotation2d(0)))
+            ),true),
+
+        new WaitCommand(1),
+        new AutoDrive(List.of((new Pose2d(-3.6, 0, new Rotation2d(0))),
+            (new Pose2d(-4.6, 0, new Rotation2d(0)))
+            //(new Pose2d(-3.5,0, new Rotation2d(0)))
+            ),true),
+
+            new AutoDrive(List.of((new Pose2d(-4.6, 0, new Rotation2d(0))),
+            (new Pose2d(-2.7, 0, new Rotation2d(0)))
+            ),false),
+            //old 2.7
+            new BalanceRobotCommand()
+
+
     );
 
     private final Command m_autoRight= new SequentialCommandGroup(
@@ -142,6 +168,7 @@ public class RobotContainer {
         autoChooser.addOption("Center: ",m_autoCenter);
         autoChooser.addOption("Outside (Wall): ", m_autoRight);
         autoChooser.addOption("test: ", m_testauto);
+        autoChooser.addOption("center cross line", m_autoCenterTest);
 
         SmartDashboard.putData("Auto mode", autoChooser);   
     }
@@ -156,6 +183,12 @@ public class RobotContainer {
         /* Driver Buttons */
         // Vacuum
         enableVac.onTrue(new InstantCommand(()-> s_ArmSubsystem.toggleClaw()));
+
+        findTarget.onTrue(new SequentialCommandGroup(
+
+
+
+        ));
 
         /* Arm */
         armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle+2,0.25,false,false,false));
@@ -174,9 +207,9 @@ public class RobotContainer {
         medPos.onTrue(new SequentialCommandGroup(
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
-            new AdjustArmParallel(85.5, 13.75,ArmMoveType.extendToPlace)
+            new AdjustArmParallel(86.5, 13.75,ArmMoveType.extendToPlace)
             
-            //old: 84.5
+            //old: 85.5
 
         ));
         
@@ -190,7 +223,7 @@ public class RobotContainer {
         highPos.onTrue(new SequentialCommandGroup (
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
-            new AdjustArmParallel(97.5, 29.75,ArmMoveType.extendToPlace)
+            new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace)
         )); 
 
         highPos.onFalse(new SequentialCommandGroup (
@@ -200,8 +233,8 @@ public class RobotContainer {
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
         ));    
 
-       balanceRobot.whileTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
-       
+       //balanceRobot.whileTrue(new BalanceRobotCommand());  // Try to see if the button calls this. 
+       limelightTest.whileTrue(new LimelightTarget()); 
        groundPickUp.onTrue(
            new AdjustArm2(45.0, 16.5,ArmMoveType.pickUp));
        
@@ -209,7 +242,7 @@ public class RobotContainer {
             new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4,0.25,ArmMoveType.placeOnRobot));
 
         humanPickUp.onTrue(
-            new AdjustArm2(85, 0.25,ArmMoveType.pickUp)
+            new AdjustArm2(86, 0.25,ArmMoveType.pickUp)
         );
 
         humanPickUp.onFalse(new SequentialCommandGroup(
