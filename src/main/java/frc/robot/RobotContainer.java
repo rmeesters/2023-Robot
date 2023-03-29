@@ -56,10 +56,12 @@ public class RobotContainer {
     private static SendableChooser<Command> autoChooser;
     private final Command m_autoLeft = new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+        new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
-        new WaitCommand(0.5),
-        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+            //old 94 angle
+            new WaitCommand(0.5),
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
 
         // back up across the line 
         new AutoDrive(List.of(
@@ -73,10 +75,12 @@ public class RobotContainer {
 
     private final Command m_autoCenter =  new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+        new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
-        new WaitCommand(0.5),
-        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+            //old 94 angle
+            new WaitCommand(0.5),
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
         
         // back up and balance
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
@@ -86,11 +90,12 @@ public class RobotContainer {
 
     private final Command m_autoCenterTest = new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+        new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
-        new WaitCommand(0.5),
-        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
-
+            //old 94 angle
+            new WaitCommand(0.5),
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
         new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),
             (new Pose2d(-3.6, 0, new Rotation2d(0)))
             //(new Pose2d(-3.5,0, new Rotation2d(0)))
@@ -113,10 +118,17 @@ public class RobotContainer {
 
     private final Command m_autoRight= new SequentialCommandGroup(
         new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
-        new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+        new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace),
         new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
-        new WaitCommand(0.5),
-        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+            //old 94 angle
+            new WaitCommand(0.5),
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
+        
+        // new AdjustArm2(98, 29.75,ArmMoveType.extendToPlace),
+        // new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
+        // new WaitCommand(0.5),
+        // new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome),
         new AutoDrive(List.of(
             (new Pose2d(0, 0, new Rotation2d(0))),
             (new Pose2d(-2, 0.3, new Rotation2d(0))),
@@ -137,8 +149,13 @@ public class RobotContainer {
     
 
     private final Command m_testauto =  new SequentialCommandGroup(
-       new AutoDrive(List.of((new Pose2d(0, 0, new Rotation2d(0))),(new Pose2d(-1, 0, Rotation2d.fromDegrees(115)))),true)
-        //90 deg - requires an additional 25 degrees to be added
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+4.0, 0.25,ArmMoveType.setPosition),
+        new AdjustArm2(Constants.ArmConstants.pivotBottomAngle+42.75,0,ArmMoveType.setPosition),
+        new AdjustArmParallel(98.5, 29.75,ArmMoveType.extendToPlace),
+        new AdjustArm2(94, 28.5,ArmMoveType.dropPiece),
+            //old 94 angle
+            new WaitCommand(0.1),
+            new AdjustArm2(Constants.ArmConstants.pivotBottomAngle, 0.25,ArmMoveType.returnHome)
     );
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */

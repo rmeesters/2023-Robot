@@ -102,7 +102,7 @@ public class ArmSubsystem extends SubsystemBase {
         armRack.setInverted(true);
         armRack.setSensorPhase(true);
         armRack.configMotionAcceleration(RACKCONST * 99999999);  // was 20 //29
-        armRack.configMotionCruiseVelocity(RACKCONST*12); 
+        armRack.configMotionCruiseVelocity(RACKCONST*24); //was 12
 
         // Config P, I, D, F values
         armPivot.config_kP(loopIDX, pivotKP, timeoutMS);
