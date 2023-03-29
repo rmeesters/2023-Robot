@@ -33,16 +33,19 @@ public class LimelightTarget extends CommandBase {
   }
 
   public void drivetoTarget(){
-    /* LimelightTarget_Retro target = new LimelightTarget_Retro();
-     Pose2d targetpos =  target.getRobotPose_TargetSpace2D();
-     LimelightResults r = new LimelightResults();
+    LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
+    var rrResults = llresults.targetingResults.targets_Retro[0];
+    
+    // LimelightTarget_Retro target = new LimelightTarget_Retro();
+     Pose2d targetpos =  rrResults.getRobotPose_TargetSpace2D();
+     //LimelightResults r = new LimelightResults();
 
     distancexAway = LimelightHelpers.getTX("limelight"); //target.tx;
     distanceyAway = targetpos.getY();
 
     //SmartDashboard.putNumber("distance x away from target", r.targetingResults.getBotPose2d().getX());
     SmartDashboard.putNumber("TX Angle:", distancexAway);
-    SmartDashboard.putNumber("distance y away from target", 321);*/
+    SmartDashboard.putNumber("distance y away from target", distanceyAway);
 
 
     //can change later.
