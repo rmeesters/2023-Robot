@@ -59,6 +59,7 @@ public class AdjustArmParallel extends ParallelCommandGroup {
 			addCommands(new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableVac(true)), 
 					new InstantCommand(() -> RobotContainer.s_ArmSubsystem.enableClaw(true)),new movePivot(pivotAngle), new moveRack(rackPosition));
 			break;
+	
 		}
 	}
 }
