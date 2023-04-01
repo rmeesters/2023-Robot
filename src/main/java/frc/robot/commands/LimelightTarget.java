@@ -24,8 +24,15 @@ public class LimelightTarget extends CommandBase {
   private Swerve s_Swerve;
   double distancexAway;
   double distanceyAway;
+  double limelightMountAngleDegrees=2;
+  
+  double limelightLensHeightCm=25; //in cm
+  double goalheightCm=25.5;
 
   double cameraOffset=5;
+  private double p;
+    private double KP = 0.025; //was 0.0125
+    final private double TOLERANCE_VALUE = 4.0;
   public LimelightTarget() {
     s_Swerve  =  RobotContainer.s_Swerve;
     addRequirements(s_Swerve);
@@ -33,19 +40,30 @@ public class LimelightTarget extends CommandBase {
   }
 
   public void drivetoTarget(){
-    LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
-    var rrResults = llresults.targetingResults.targets_Retro[0];
+    
+    // LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight-gnomes");
+    // var rrResults = llresults.targetingResults.targets_Retro[0];
     
     // LimelightTarget_Retro target = new LimelightTarget_Retro();
-     Pose2d targetpos =  rrResults.getRobotPose_TargetSpace2D();
+    //Pose2d targetpos =  rrResults.getCameraPose_TargetSpace2D();
      //LimelightResults r = new LimelightResults();
 
-    distancexAway = LimelightHelpers.getTX("limelight"); //target.tx;
-    distanceyAway = targetpos.getY();
+     try {
+      
+    distancexAway = LimelightHelpers.getTX("limelight-gnomes"); //target.tx;
+    distanceyAway = LimelightHelpers.getTY("limelight-gnomes"); 
+     } catch (Exception e) {
+      distancexAway=0;
+      distancexAway=0;
+     }
+
+
+    //distanceyAway = targetpos.getY();
 
     //SmartDashboard.putNumber("distance x away from target", r.targetingResults.getBotPose2d().getX());
     SmartDashboard.putNumber("TX Angle:", distancexAway);
-    SmartDashboard.putNumber("distance y away from target", distanceyAway);
+    SmartDashboard.putNumber("TY Angle:", distanceyAway);
+    //SmartDashboard.putNumber("distance y away from target", distanceyAway);
 
 
     //can change later.
@@ -58,6 +76,49 @@ public class LimelightTarget extends CommandBase {
   //     //old +0.125
   // );
 
+//CALC DIST
+
+     double angletoGoalrad = (limelightMountAngleDegrees + distanceyAway)*(Math.PI /180.0);
+
+     double distancefromTar= (goalheightCm- limelightLensHeightCm)/Math.tan(angletoGoalrad);
+     
+     SmartDashboard.putNumber("target dist",distancefromTar/10);
+
+
+     p = Math.abs(distancexAway*KP);
+     if (distancexAway > 1.0) {
+        SmartDashboard.putBoolean("On target", false);
+        s_Swerve.drive(
+            new Translation2d(0, -p).times(Constants.Swerve.maxSpeed), //0.125
+            0 * Constants.Swerve.maxAngularVelocity, 
+            false, 
+            true
+            //old +0.125
+        );
+     }
+
+     else if(distancexAway<-1.0){
+      SmartDashboard.putBoolean("On target", false);
+      s_Swerve.drive(
+            new Translation2d(0, p).times(Constants.Swerve.maxSpeed), //0.125
+            0 * Constants.Swerve.maxAngularVelocity, 
+            false, 
+            true
+            //old +0.125
+        );
+
+     }
+     else {
+        SmartDashboard.putBoolean("On target", true);
+        s_Swerve.drive(
+          new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
+          0 * Constants.Swerve.maxAngularVelocity, 
+          false, 
+          true
+      );
+     }
+
+
     
   }
 
@@ -69,11 +130,16 @@ public class LimelightTarget extends CommandBase {
   @Override
   public void execute() {
     drivetoTarget();
+    SmartDashboard.putBoolean("Limelight Command Execute", true);
+    LimelightHelpers.setPipelineIndex("limelight-gnomes", 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("Limelight Command Execute", false);
+    LimelightHelpers.setPipelineIndex("limelight-gnomes", 1);
+  }
 
   // Returns true when the command should end.
   @Override
