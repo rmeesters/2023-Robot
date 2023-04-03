@@ -42,7 +42,7 @@ public class RobotContainer {
         private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kPS.value);
         private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
         private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kShare.value);
-        private final JoystickButton findTarget = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
+        private final JoystickButton limelightTest2 = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
         private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
         private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
         private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
@@ -227,9 +227,8 @@ public class RobotContainer {
                 // Vacuum
                 enableVac.onTrue(new InstantCommand(() -> s_ArmSubsystem.toggleClaw()));
 
-                findTarget.onTrue(new SequentialCommandGroup(
-
-                ));
+                limelightTest2.whileTrue(new SequentialCommandGroup(
+                                new LimelightTarget2()));
 
                 /* Arm */
                 armHome.onTrue(new adjustArm(Constants.ArmConstants.pivotBottomAngle + 2, 0.25, false, false, false));
