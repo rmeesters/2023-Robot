@@ -42,12 +42,12 @@ public class RobotContainer {
         private final JoystickButton enableVac = new JoystickButton(driver, PS4Controller.Button.kPS.value);
         private final JoystickButton armHome = new JoystickButton(driver, PS4Controller.Button.kOptions.value);
         private final JoystickButton robotCentric = new JoystickButton(driver, PS4Controller.Button.kShare.value);
-        private final JoystickButton limelightTest2 = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
+        private final JoystickButton limelightadjusttest = new JoystickButton(driver, PS4Controller.Button.kTouchpad.value);
         private final JoystickButton groundPickUp = new JoystickButton(driver, PS4Controller.Button.kR2.value);
         private final JoystickButton humanPickUp = new JoystickButton(driver, PS4Controller.Button.kR1.value);
         private final JoystickButton manualIncreaseArm = new JoystickButton(driver, PS4Controller.Button.kL1.value);
         private final JoystickButton manualDecreasrArm = new JoystickButton(driver, PS4Controller.Button.kL2.value);
-        private final JoystickButton limelightTest = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
+        private final JoystickButton limelightadjust = new JoystickButton(driver, PS4Controller.Button.kCircle.value);
         // private final JoystickButton zeroGyro = new JoystickButton(driver,
         // PS4Controller.Button.kTriangle.value);
 
@@ -227,7 +227,7 @@ public class RobotContainer {
                 // Vacuum
                 enableVac.onTrue(new InstantCommand(() -> s_ArmSubsystem.toggleClaw()));
 
-                limelightTest2.whileTrue(new SequentialCommandGroup(
+                limelightadjusttest.whileTrue(new SequentialCommandGroup(
                                 new LimelightTarget2()));
 
                 /* Arm */
@@ -275,7 +275,7 @@ public class RobotContainer {
 
                 // balanceRobot.whileTrue(new BalanceRobotCommand()); // Try to see if the
                 // button calls this.
-                limelightTest.whileTrue(new SequentialCommandGroup(
+                limelightadjust.whileTrue(new SequentialCommandGroup(
                                 new LimelightTarget()));
                 groundPickUp.onTrue(
                                 new AdjustArm2(45.0, 16.5, ArmMoveType.pickUp));

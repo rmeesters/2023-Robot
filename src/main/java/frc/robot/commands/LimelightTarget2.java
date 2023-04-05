@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.LimelightHelpers.*;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +32,8 @@ public class LimelightTarget2 extends CommandBase {
   double goalheightCm=25.5;
 
   double cameraOffset=5;
-  private double p;
+  private double px;
+  private double py;
     private double KP = 0.025; //was 0.0125
     final private double TOLERANCE_VALUE = 4.0;
   public LimelightTarget2() {
@@ -56,6 +59,11 @@ public class LimelightTarget2 extends CommandBase {
       distancexAway=0;
       distancexAway=0;
      }
+
+     new SequentialCommandGroup(
+     new InstantCommand(() -> this.DriveXtoTarget()),
+     new InstantCommand(() -> this.DriveYtoTarget())
+     );
 
 
     //distanceyAway = targetpos.getY();
@@ -85,31 +93,86 @@ public class LimelightTarget2 extends CommandBase {
     //  SmartDashboard.putNumber("target dist",distancefromTar/10);
 
 
-     p = Math.abs(distanceyAway*KP);
-     if (distanceyAway > 1.0) {
-        SmartDashboard.putBoolean("On target", false);
-        s_Swerve.drive(
-            new Translation2d(-p, 0).times(Constants.Swerve.maxSpeed), //0.125
+     
+
+
+    
+  }
+
+  public void DriveYtoTarget(){
+    py = Math.abs(distanceyAway*KP);
+    if (distanceyAway > 1.0) {
+       SmartDashboard.putBoolean("On target", false);
+       s_Swerve.drive(
+           new Translation2d(-py, 0).times(Constants.Swerve.maxSpeed), //0.125
+           0 * Constants.Swerve.maxAngularVelocity, 
+           false, 
+           true
+           //old +0.125
+       );
+    }
+
+    else if(distancexAway<-1.0){
+      SmartDashboard.putBoolean("On target", false);
+      s_Swerve.drive(
+            new Translation2d(py,0).times(Constants.Swerve.maxSpeed), //0.125
             0 * Constants.Swerve.maxAngularVelocity, 
             false, 
             true
             //old +0.125
         );
+
      }
 
-    
-     else {
-        SmartDashboard.putBoolean("On target", true);
-        s_Swerve.drive(
-          new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
-          0 * Constants.Swerve.maxAngularVelocity, 
-          false, 
-          true
-      );
-     }
+   
+    else {
+       SmartDashboard.putBoolean("On target", true);
+       s_Swerve.drive(
+         new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
+         0 * Constants.Swerve.maxAngularVelocity, 
+         false, 
+         true
+     );
+    }
+
+  }
+
+  public void DriveXtoTarget(){
+
+    px = Math.abs(distancexAway*KP);
+    if (distancexAway > 1.0) {
+       SmartDashboard.putBoolean("On target", false);
+       s_Swerve.drive(
+           new Translation2d(0, -px).times(Constants.Swerve.maxSpeed), //0.125
+           0 * Constants.Swerve.maxAngularVelocity, 
+           false, 
+           true
+           //old +0.125
+       );
+    }
+
+    else if(distancexAway<-1.0){
+     SmartDashboard.putBoolean("On target", false);
+     s_Swerve.drive(
+           new Translation2d(0, px).times(Constants.Swerve.maxSpeed), //0.125
+           0 * Constants.Swerve.maxAngularVelocity, 
+           false, 
+           true
+           //old +0.125
+       );
+
+    }
+    else {
+       SmartDashboard.putBoolean("On target", true);
+       s_Swerve.drive(
+         new Translation2d(0, 0).times(Constants.Swerve.maxSpeed), 
+         0 * Constants.Swerve.maxAngularVelocity, 
+         false, 
+         true
+     );
+    }
 
 
-    
   }
 
   // Called when the command is initially scheduled.
